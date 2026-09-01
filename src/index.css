@@ -1,0 +1,122 @@
+/* @import url() FONT IMPORTS MUST ALWAYS BE AT THE VERY TOP OF THIS FILE, ABOVE THE TAILWIND IMPORTS — DO NOT DELETE THIS COMMENT */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap');
+
+/* CRITICAL: THE FOLLOWING TAILWIND IMPORTS MUST NEVER BE DELETED OR REORDERED — DO NOT DELETE THIS COMMENT */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* END TAILWIND IMPORTS — ALL OTHER CSS MUST GO BELOW THIS LINE */
+
+:root {
+  --bp-accent: #ff3b00;
+  --bp-line: rgba(255, 255, 255, 0.14);
+  --bp-line-strong: rgba(255, 255, 255, 0.28);
+}
+html {
+  background-color: #0a0a0a;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body {
+  margin: 0;
+  background-color: #0a0a0a;
+  color: #f2f1ed;
+  font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  overflow-x: hidden;
+}
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+::selection {
+  background: #ff3b00;
+  color: #ffffff;
+}
+/* --- Focus --------------------------------------------------------------- */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid #ff3b00;
+  outline-offset: 2px;
+}
+/* --- Hairlines ---------------------------------------------------------- */
+.bp-rule {
+  border-color: var(--bp-line);
+}
+.bp-rule-strong {
+  border-color: var(--bp-line-strong);
+}
+.bp-grid-lines {
+  background-image: linear-gradient(to right, var(--bp-line) 1px, transparent 1px);
+  background-size: 25% 100%;
+}
+/* --- Fine dot field (structural, not decorative blobs) ------------------ */
+.bp-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+/* --- Scrollbar ---------------------------------------------------------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a2a transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #4d4d4d;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* --- Utility ------------------------------------------------------------ */
+.bp-hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.bp-hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.bp-underline-hover {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.bp-underline-hover:hover,
+.bp-underline-hover:focus-visible {
+  background-size: 100% 1px;
+}
+.bp-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+.bp-skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+  animation: shimmer 1.6s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .bp-skeleton::after {
+    display: none;
+  }
+}
