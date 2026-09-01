@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: blackpill-labs
+    runtime: static
+    repo: https://github.com/javasjavasjavas/blackpill.git
+    branch: main
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    autoDeployTrigger: commit
+    domains:
+      - blackpill-labs.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
