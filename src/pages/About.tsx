@@ -34,9 +34,46 @@ const INDEX_CATEGORIES = [
   )
 ].filter((category): category is (typeof categories)[number] => Boolean(category));
 
+const SUBMISSION_API_URL =
+  import.meta.env.VITE_SUBMISSION_API_URL ||
+  'https://blackpill-labs-mailer.onrender.com/api/submissions';
 
 export const About: React.FC = () => {
-  const [state, setState] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+  const submitProject = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setState('sending');
+
+    const form = event.currentTarget;
+    const fields = new FormData(form);
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 75_000);
+
+    try {
+      const response = await fetch(SUBMISSION_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
+        body: JSON.stringify({
+          artist: fields.get('artist'),
+          email: fields.get('email'),
+          link: fields.get('link'),
+          idea: fields.get('idea'),
+          website: fields.get('website')
+        })
+      });
+
+      if (!response.ok) throw new Error('SUBMISSION_FAILED');
+
+      form.reset();
+      setState('sent');
+    } catch {
+      setState('error');
+    } finally {
+      window.clearTimeout(timeout);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-frame px-5 pb-24 pt-10 lg:px-10">
@@ -105,17 +142,16 @@ export const About: React.FC = () => {
               </div> :
 
             <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setState('sending');
-                window.setTimeout(() => setState('sent'), 900);
-              }}
+              onSubmit={submitProject}
               className="space-y-6">
-              
+                <div className="absolute -left-[9999px]" aria-hidden="true">
+                  <label htmlFor="sub-website">Website</label>
+                  <input id="sub-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                </div>
                 {[
-              { id: 'sub-name', label: 'Artist or studio', type: 'text' },
-              { id: 'sub-email', label: 'Email', type: 'email' },
-              { id: 'sub-link', label: 'Collection, repository or prototype URL', type: 'text' }].
+              { id: 'sub-name', name: 'artist', label: 'Artist or studio', type: 'text' },
+              { id: 'sub-email', name: 'email', label: 'Email', type: 'email' },
+              { id: 'sub-link', name: 'link', label: 'Collection, repository or prototype URL', type: 'url' }].
               map((field) =>
               <div key={field.id}>
                     <label
@@ -126,6 +162,7 @@ export const About: React.FC = () => {
                     </label>
                     <input
                   id={field.id}
+                  name={field.name}
                   type={field.type}
                   required
                   className="mt-2 h-11 w-full border border-white/20 bg-transparent px-3 font-mono text-11 text-paper focus:border-paper focus:outline-none" />
@@ -141,11 +178,17 @@ export const About: React.FC = () => {
                   </label>
                   <textarea
                   id="sub-idea"
+                  name="idea"
                   rows={4}
                   required
                   className="mt-2 w-full border border-white/20 bg-transparent p-3 font-mono text-11 leading-relaxed text-paper focus:border-paper focus:outline-none" />
                 
                 </div>
+                {state === 'error' &&
+                <p role="alert" className="font-mono text-10 uppercase tracking-label text-accent">
+                    The submission could not be sent. Please try again.
+                  </p>
+                }
                 <ActionButton type="submit" size="lg" disabled={state === 'sending'}>
                   {state === 'sending' ?
                 <>

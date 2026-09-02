@@ -13,3 +13,21 @@ services:
       - type: rewrite
         source: /*
         destination: /index.html
+
+  - type: web
+    name: blackpill-labs-mailer
+    runtime: node
+    plan: free
+    repo: https://github.com/javasjavasjavas/blackpill.git
+    branch: main
+    buildCommand: echo "Submission API ready"
+    startCommand: node server/submission-api.mjs
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: RESEND_API_KEY
+        sync: false
+      - key: SUBMISSION_TO_EMAIL
+        value: javdamico@gmail.com
+      - key: SUBMISSION_FROM_EMAIL
+        value: Black Pill <onboarding@resend.dev>
