@@ -110,6 +110,7 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
               title={collection.title}
               className="absolute inset-0"
               interactive
+              autoLoad
             /> :
             <ArtCanvas
               variant={collection.art.variant}
@@ -132,7 +133,7 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
           </div>
           <p className="mt-3 font-mono text-10 uppercase tracking-label text-steel">
             {htmlPreviewUrl ?
-            'Static preview shown by default. Load the interactive HTML only when you want to explore it.' :
+            'Interactive HTML preview rendered live in the browser.' :
             'Preview generated in-browser from the same rule set as the contract renderer. Interaction and audio are available inside the token view.'}
           </p>
         </div>

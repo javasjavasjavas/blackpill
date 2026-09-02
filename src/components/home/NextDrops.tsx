@@ -93,6 +93,7 @@ export const NextDrops: React.FC = () => {
             <FeaturedDrop
             drop={feature.drop}
             collection={feature.collection}
+            autoLoadHtmlPreview
             reminded={reminders.includes(feature.drop.id)}
             onRemind={() =>
             setReminders((r) =>

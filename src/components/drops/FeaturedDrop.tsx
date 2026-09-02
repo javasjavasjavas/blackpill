@@ -16,13 +16,15 @@ interface FeaturedDropProps {
   collection: Collection;
   onRemind?: () => void;
   reminded?: boolean;
+  autoLoadHtmlPreview?: boolean;
 }
 
 export const FeaturedDrop: React.FC<FeaturedDropProps> = ({
   drop,
   collection,
   onRemind,
-  reminded
+  reminded,
+  autoLoadHtmlPreview = false
 }) => {
   const artist = getArtist(collection.artistSlug);
   const upcoming = drop.phase === 'Upcoming' || drop.phase === 'Allowlist';
@@ -52,6 +54,8 @@ export const FeaturedDrop: React.FC<FeaturedDropProps> = ({
             <DistrictsPreview
               title={collection.title}
               className="absolute inset-0"
+              interactive={autoLoadHtmlPreview}
+              autoLoad={autoLoadHtmlPreview}
             /> :
             <ArtCanvas
               variant={collection.art.variant}

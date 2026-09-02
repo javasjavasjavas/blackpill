@@ -6,6 +6,7 @@ interface DistrictsPreviewProps {
   title: string;
   className?: string;
   interactive?: boolean;
+  autoLoad?: boolean;
 }
 
 const posterUrl = `${import.meta.env.BASE_URL}images/districts-preview.jpg`;
@@ -16,7 +17,8 @@ const livePreviewUrl = import.meta.env.PROD
 export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
   title,
   className,
-  interactive = false
+  interactive = false,
+  autoLoad = false
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [requested, setRequested] = useState(false);
@@ -25,7 +27,7 @@ export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
   const shouldMount = interactive && requested && visible;
 
   useEffect(() => {
-    if (!interactive || !requested || !containerRef.current || !('IntersectionObserver' in window)) {
+    if (!interactive || !containerRef.current || !('IntersectionObserver' in window)) {
       return;
     }
 
@@ -36,7 +38,32 @@ export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
 
     observer.observe(containerRef.current);
     return () => observer.disconnect();
-  }, [interactive, requested]);
+  }, [interactive]);
+
+  useEffect(() => {
+    if (!interactive || !autoLoad) return;
+
+    let timer: number | undefined;
+    let idle: number | undefined;
+
+    const activate = () => setRequested(true);
+    const queue = () => {
+      if ('requestIdleCallback' in window) {
+        idle = window.requestIdleCallback(activate, { timeout: 1200 });
+      } else {
+        timer = window.setTimeout(activate, 150);
+      }
+    };
+
+    if (document.readyState === 'complete') queue();
+    else window.addEventListener('load', queue, { once: true });
+
+    return () => {
+      window.removeEventListener('load', queue);
+      if (timer !== undefined) window.clearTimeout(timer);
+      if (idle !== undefined && 'cancelIdleCallback' in window) window.cancelIdleCallback(idle);
+    };
+  }, [autoLoad, interactive]);
 
   useEffect(() => {
     if (!shouldMount) setLoaded(false);
@@ -64,7 +91,7 @@ export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
       />
       }
 
-      {interactive && !requested &&
+      {interactive && !autoLoad && !requested &&
       <button
         type="button"
         onClick={() => setRequested(true)}
