@@ -132,7 +132,7 @@ export const FeaturedDrop: React.FC<FeaturedDropProps> = ({
         </dl>
 
         <div className="mt-8 flex flex-wrap gap-3">
-          <ActionButton to={`/collection/${collection.slug}`} magnetic>
+          <ActionButton to={`/collection/${collection.slug}`}>
             View Drop
             <ArrowRightIcon className="h-4 w-4" strokeWidth={1.5} />
           </ActionButton>

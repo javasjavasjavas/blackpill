@@ -176,7 +176,7 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
                   {formatDateTime(collection.dropDate)}
                 </p>
                 <div className="mt-5 flex flex-wrap gap-2">
-                  <ActionButton onClick={() => setReminded((r) => !r)} magnetic>
+                  <ActionButton onClick={() => setReminded((r) => !r)}>
                     <BellIcon className="h-4 w-4" strokeWidth={1.5} />
                     {reminded ? 'Reminder set' : 'Get Reminder'}
                   </ActionButton>
@@ -262,7 +262,6 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
                   <ActionButton
                     size="lg"
                     className="w-full"
-                    magnetic
                     onClick={mint}
                     disabled={mintState === 'minting'}>
                     

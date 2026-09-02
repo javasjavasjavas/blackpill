@@ -28,7 +28,6 @@ export const SubmitProjectCTA: React.FC = () => (
           <ActionButton
             to="/about#submit"
             size="lg"
-            magnetic
             className="mt-8 border-ink bg-ink text-paper hover:bg-carbon">
             Submit your project
             <ArrowRightIcon className="h-4 w-4" strokeWidth={1.5} />

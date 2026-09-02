@@ -18,7 +18,7 @@ export const NotFound: React.FC<NotFoundProps> = ({
     </h1>
     <p className="mt-8 max-w-xl text-lg leading-relaxed text-bone">{message}</p>
     <div className="mt-10 flex flex-wrap gap-3">
-      <ActionButton to="/collections" magnetic>
+      <ActionButton to="/collections">
         Browse collections
       </ActionButton>
       <ActionButton to="/" variant="outline">

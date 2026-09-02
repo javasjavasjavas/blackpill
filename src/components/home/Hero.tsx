@@ -53,7 +53,7 @@ export const Hero: React.FC<HeroProps> = ({ nextDrop, variant }) => {
       </p>
 
       <div className="mt-9 flex flex-wrap items-center gap-3">
-        <ActionButton to="/collections" size="lg" magnetic className="!text-ink">
+        <ActionButton to="/collections" size="lg" className="!text-ink">
           Explore Collections
           <ArrowRightIcon className="h-4 w-4" strokeWidth={1.5} />
         </ActionButton>
