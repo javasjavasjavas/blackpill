@@ -21,9 +21,9 @@ export const SubmitProjectCTA: React.FC = () => (
       <div className="lg:col-span-6 lg:col-start-7 lg:self-end">
         <Reveal>
           <p className="max-w-xl text-lg leading-relaxed text-ink/75 md:text-xl">
-            Not another image. Not another roadmap. Send us the contract, the prototype, or the
-            impossible mechanism. If it moves, listens, mutates, plays, measures, or thinks on-chain,
-            we want to see it.
+            Not another image. Not another roadmap. Share your project, your process, or the idea you
+            want to bring to life. If it moves, evolves, responds, plays, measures, or explores new
+            possibilities, we want to see it.
           </p>
           <ActionButton
             to="/about#submit"
