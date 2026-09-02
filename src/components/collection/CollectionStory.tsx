@@ -10,6 +10,9 @@ interface CollectionStoryProps {
 }
 
 export const CollectionStory: React.FC<CollectionStoryProps> = ({ collection, artist }) => {
+  const htmlPreviewUrl = collection.art.htmlPreview ?
+    `${import.meta.env.BASE_URL}${collection.art.htmlPreview}` :
+    null;
   const chapters = [
   { index: '01', title: 'The idea', body: collection.story.idea },
   { index: '02', title: 'How it works', body: collection.story.howItWorks },
@@ -54,19 +57,37 @@ export const CollectionStory: React.FC<CollectionStoryProps> = ({ collection, ar
 
                 {i === 1 &&
               <figure className="mt-8">
+                    {collection.slug === 'districts' && htmlPreviewUrl ?
+                    <div className="grid gap-4 sm:grid-cols-2">
+                        {[1, 2].map((preview) =>
+                        <div
+                          key={preview}
+                          className="relative aspect-square w-full overflow-hidden border bp-rule">
+                          <iframe
+                            src={htmlPreviewUrl}
+                            title={`Districts live HTML preview ${preview}`}
+                            className="pointer-events-none absolute inset-0 h-full w-full border-0 bg-[#06070a]"
+                            sandbox="allow-scripts allow-same-origin"
+                            loading="lazy" />
+                        </div>
+                        )}
+                      </div> :
                     <div className="relative aspect-[16/7] w-full overflow-hidden border bp-rule">
-                      <ArtCanvas
-                    variant={collection.art.variant}
-                    accent={collection.art.accent}
-                    seed={collection.index * 401 + 77}
-                    size="hero"
-                    className="absolute inset-0 h-full w-full"
-                    label={`Diagram: a second sample from the ${collection.title} rule set`} />
-                  
-                    </div>
+                        <ArtCanvas
+                          variant={collection.art.variant}
+                          accent={collection.art.accent}
+                          seed={collection.index * 401 + 77}
+                          size="hero"
+                          className="absolute inset-0 h-full w-full"
+                          label={`Diagram: a second sample from the ${collection.title} rule set`} />
+                      </div>
+                    }
                     <figcaption className="mt-3 font-mono text-10 uppercase tracking-label text-steel">
-                      Fig. 01 — Second sample from the same rule set, different seed.{' '}
-                      {collection.spec.rendering}.
+                      {collection.slug === 'districts' ?
+                      'Two live Districts rendered side by side from the interactive HTML.' :
+                      <>Fig. 01 — Second sample from the same rule set, different seed.{' '}
+                          {collection.spec.rendering}.</>
+                      }
                     </figcaption>
                   </figure>
               }
