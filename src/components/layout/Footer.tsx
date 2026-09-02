@@ -86,10 +86,10 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="mt-14 flex items-center justify-between border-t bp-rule pt-5">
-            <p className="font-mono text-10 tracking-label text-smoke">
+            <p className="font-mono text-10 uppercase tracking-label text-smoke">
               © 2026 Black Pill Labs
             </p>
-            <p className="font-mono text-10 tracking-label text-smoke">
+            <p className="font-mono text-10 uppercase tracking-label text-smoke">
               Take the Pill.
             </p>
           </div>

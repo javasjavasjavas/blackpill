@@ -3,7 +3,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Nav } from './Nav';
 import { Footer } from './Footer';
-import { CustomCursor } from './CustomCursor';
 import { WalletModal } from '../wallet/WalletModal';
 
 export const Shell: React.FC = () => {
@@ -42,7 +41,6 @@ export const Shell: React.FC = () => {
       </motion.main>
       <Footer />
       <WalletModal />
-      <CustomCursor />
     </div>);
 
 };
