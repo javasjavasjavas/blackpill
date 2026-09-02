@@ -302,11 +302,13 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
             )}>
             
             {[
-            { k: 'Supply', v: collection.supply ? formatNumber(collection.supply) : 'Open edition' },
+            { k: 'Supply', v: collection.slug === 'districts' ? 'TBA' : collection.supply ? formatNumber(collection.supply) : 'Open edition' },
             { k: 'Storage', v: collection.spec.storage },
             collection.slug === 'districts' ?
             { k: 'Chain', v: collection.spec.chain } :
             { k: 'Standard', v: collection.spec.tokenStandard },
+            collection.slug === 'districts' ?
+            { k: 'Price', v: 'TBA' } :
             { k: 'Released', v: collection.spec.releaseDate }].
             map((m) =>
             <div key={m.k}>

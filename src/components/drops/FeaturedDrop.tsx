@@ -6,6 +6,7 @@ import { ActionButton } from '../ui/ActionButton';
 import { CountdownDisplay } from '../ui/CountdownDisplay';
 import { Label } from '../ui/Label';
 import { Tag } from '../ui/Tag';
+import { DeferredIframe } from '../ui/DeferredIframe';
 import { getArtist } from '../../data/artists';
 import type { Collection, Drop } from '../../types';
 import { cn, formatDateTime, formatNumber, formatPrice } from '../../utils/format';
@@ -30,8 +31,8 @@ export const FeaturedDrop: React.FC<FeaturedDropProps> = ({
     null;
   const metrics = [
     { k: 'Chain', v: collection.spec.chain },
-    { k: 'Supply', v: collection.supply ? formatNumber(collection.supply) : 'Open' },
-    { k: 'Price', v: formatPrice(collection.price, collection.currency) },
+    { k: 'Supply', v: collection.slug === 'districts' ? 'TBA' : collection.supply ? formatNumber(collection.supply) : 'Open' },
+    { k: 'Price', v: collection.slug === 'districts' ? 'TBA' : formatPrice(collection.price, collection.currency) },
     ...(collection.slug === 'districts' ? [] : [{ k: 'Category', v: collection.tech[0] }])
   ];
 
@@ -48,7 +49,7 @@ export const FeaturedDrop: React.FC<FeaturedDropProps> = ({
               htmlPreviewUrl ? 'aspect-square' : 'aspect-[16/11]'
             )}>
             {htmlPreviewUrl ?
-            <iframe
+            <DeferredIframe
               src={htmlPreviewUrl}
               title={`Interactive preview of ${collection.title}`}
               className="pointer-events-none absolute inset-0 h-full w-full border-0 bg-[#06070a]"

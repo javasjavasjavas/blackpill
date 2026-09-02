@@ -8,7 +8,7 @@ export const drops: Drop[] = [
 {
   id: 'DROP-014',
   collectionSlug: 'districts',
-  date: '2026-09-02T19:00:00.000Z',
+  date: '2026-09-09T15:32:00.000Z',
   phase: 'Allowlist',
   mintWindow: '48h mint window',
   allowlistNote: 'Allowlist opens 2h early — 808 instruments, one per wallet.',

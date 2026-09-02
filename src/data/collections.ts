@@ -270,9 +270,9 @@ export const collections: Collection[] = [
   slug: 'districts',
   title: 'Districts',
   artistSlug: 'javier-damico',
-  concept: 'Interactive, generative coded cities, including real-time data for the viewer as Currencies prices, Local Weather and more.',
+  concept: 'Districts explores generative-coded districts as a living digital system rather than a fixed image. Each work combines architecture, atmosphere and information to create a place that feels active, local and continuously connected to the world outside the screen.',
   summary:
-  'A collection of interactive, generative coded cities shaped by live information, including market prices, local weather and time.',
+  'Districts explores generative-coded districts as a living digital system rather than a fixed image. Each work combines architecture, atmosphere and information to create a place that feels active, local and continuously connected to the world outside the screen.',
   tech: ['Generative', 'Animated', 'Interactive', 'Live Data'],
   categories: ['generative', 'interactive', 'data-driven'],
   status: 'Allowlist',
@@ -281,7 +281,7 @@ export const collections: Collection[] = [
   price: 0.01,
   currency: 'ETH',
   year: 2026,
-  dropDate: '2026-09-02T19:00:00.000Z',
+  dropDate: '2026-09-09T15:32:00.000Z',
   spec: {
     chain: 'Ethereum',
     contract: '0x6Bd3F02aC17e94b58Ac1d7E306f2B84a9C05E1D7',
@@ -293,7 +293,7 @@ export const collections: Collection[] = [
     dynamicBehavior: 'Live weather, time and market data alter the city at every viewing',
     license: 'CC BY-NC 4.0',
     royalty: '10% — split with two collaborators',
-    releaseDate: '02 Sep 2026'
+    releaseDate: '09 Sep 2026'
   },
   story: {
     idea: 'Districts explores the city as a living digital system rather than a fixed image. Each work combines architecture, atmosphere and information to create a place that feels active, local and continuously connected to the world outside the screen.',

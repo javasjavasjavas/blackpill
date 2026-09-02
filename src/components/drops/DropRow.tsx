@@ -41,7 +41,7 @@ export const DropRow: React.FC<DropRowProps> = ({ drop, collection }) => {
         </div>
         <p className="mt-1.5 truncate font-mono text-10 uppercase tracking-meta text-smoke">
           {artist?.name} · {collection.spec.chain} ·{' '}
-          {formatPrice(collection.price, collection.currency)}
+          {collection.slug === 'districts' ? 'TBA' : formatPrice(collection.price, collection.currency)}
         </p>
       </div>
 

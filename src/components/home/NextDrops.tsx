@@ -26,11 +26,14 @@ export const NextDrops: React.FC = () => {
     return matches.
     map((d) => ({ drop: d, collection: getCollection(d.collectionSlug)! })).
     filter((x) => Boolean(x.collection)).
-    sort((a, b) =>
-    tab === 'Recently Closed' ?
-    new Date(b.drop.date).getTime() - new Date(a.drop.date).getTime() :
-    new Date(a.drop.date).getTime() - new Date(b.drop.date).getTime()
-    );
+    sort((a, b) => {
+      if (tab === 'Upcoming' && a.drop.featured !== b.drop.featured) {
+        return a.drop.featured ? -1 : 1;
+      }
+      return tab === 'Recently Closed' ?
+      new Date(b.drop.date).getTime() - new Date(a.drop.date).getTime() :
+      new Date(a.drop.date).getTime() - new Date(b.drop.date).getTime();
+    });
   }, [tab]);
 
   const feature = list[0];
