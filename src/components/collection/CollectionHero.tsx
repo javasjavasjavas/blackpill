@@ -62,17 +62,17 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
   };
 
   return (
-    <section aria-labelledby="collection-title" className="mx-auto max-w-frame px-5 lg:px-10">
+    <section aria-labelledby="collection-title" className="mx-auto max-w-frame px-5 pt-5 lg:px-10">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b bp-rule py-4">
         <nav aria-label="Breadcrumb">
           <ol className="flex items-center gap-2 font-mono text-10 uppercase tracking-meta text-steel">
             <li>
-              <Link to="/collections" className="hover:text-paper">
-                Collections
+              <Link to="/drops" className="hover:text-paper">
+                Drops
               </Link>
             </li>
             <li aria-hidden="true">/</li>
-            <li className="text-bone">{collection.id}</li>
+            <li className="text-bone">{collection.title}</li>
           </ol>
         </nav>
         <div className="flex items-center gap-2">
@@ -139,12 +139,9 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
 
         {/* Title + mint */}
         <div className="lg:col-span-5 xl:col-span-4">
-          <Label>
-            {collection.id} · {collection.year}
-          </Label>
           <h1
             id="collection-title"
-            className="mt-4 text-[clamp(2.25rem,4.5vw,3.75rem)] font-extrabold uppercase leading-[0.88] tracking-tightest text-paper">
+            className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-extrabold uppercase leading-[0.88] tracking-tightest text-paper">
             
             {collection.title}
           </h1>

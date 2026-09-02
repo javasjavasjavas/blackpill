@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { ChevronDownIcon, CopyIcon, CheckIcon } from 'lucide-react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Label } from '../ui/Label';
+import { CopyIcon, CheckIcon } from 'lucide-react';
 import { Tooltip } from '../ui/Tooltip';
 import { SectionHeading } from '../ui/SectionHeading';
 import type { Collection } from '../../types';
-import { cn } from '../../utils/format';
 
 interface TechnicalSpecProps {
   collection: Collection;
@@ -47,9 +44,7 @@ const classify = (collection: Collection): string[] => {
 };
 
 export const TechnicalSpec: React.FC<TechnicalSpecProps> = ({ collection }) => {
-  const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const reduce = useReducedMotion();
 
   const rows: {k: string;v: string;term?: string;}[] = [
   { k: 'Blockchain', v: collection.spec.chain },
@@ -60,7 +55,6 @@ export const TechnicalSpec: React.FC<TechnicalSpecProps> = ({ collection }) => {
   { k: 'Artwork format', v: collection.spec.format },
   { k: 'Rendering method', v: collection.spec.rendering },
   { k: 'Dynamic behaviour', v: collection.spec.dynamicBehavior, term: 'Dynamic' },
-  { k: 'License', v: collection.spec.license },
   { k: 'Royalty', v: collection.spec.royalty },
   { k: 'Release date', v: collection.spec.releaseDate }];
 
@@ -138,53 +132,6 @@ export const TechnicalSpec: React.FC<TechnicalSpecProps> = ({ collection }) => {
         )}
       </dl>
 
-      <div className="mt-8 border-t bp-rule">
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          className="flex w-full items-center justify-between py-4 text-left">
-          
-          <Label className="text-paper">Raw token metadata — token #1</Label>
-          <ChevronDownIcon
-            className={cn(
-              'h-4 w-4 text-smoke transition-transform duration-200 ease-swift',
-              open && 'rotate-180'
-            )}
-            strokeWidth={1.5} />
-          
-        </button>
-        <AnimatePresence initial={false}>
-          {open &&
-          <motion.div
-            initial={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
-            animate={reduce ? { opacity: 1 } : { height: 'auto', opacity: 1 }}
-            exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-            className="overflow-hidden">
-            
-              <pre className="mb-6 overflow-x-auto border bp-rule bg-void p-5 font-mono text-11 leading-relaxed text-bone">
-{`{
-  "name": "${collection.title} #1",
-  "description": "${collection.concept}",
-  "artist": "${collection.artistSlug}",
-  "chain": "${collection.spec.chain}",
-  "standard": "${collection.spec.tokenStandard}",
-  "storage": "${collection.spec.storage}",
-  "animation_url": "data:text/html;base64,PGh0bWw+…",
-  "attributes": [
-${collection.traits.
-              map((t) => `    { "trait_type": "${t.name}", "value": "${t.values[0]}" }`).
-              join(',\n')}
-  ],
-  "dynamic": ${collection.tech.includes('Dynamic')},
-  "renderer": "${collection.spec.rendering}"
-}`}
-              </pre>
-            </motion.div>
-          }
-        </AnimatePresence>
-      </div>
     </section>);
 
 };
