@@ -9,7 +9,7 @@ import { Label } from '../ui/Label';
 import { Tag } from '../ui/Tag';
 import { getArtist } from '../../data/artists';
 import type { Collection, Drop } from '../../types';
-import { cn, formatDateTime, formatNumber, formatPrice } from '../../utils/format';
+import { cn, formatNumber, formatPrice } from '../../utils/format';
 
 interface FeaturedDropProps {
   drop: Drop;
@@ -116,9 +116,6 @@ export const FeaturedDrop: React.FC<FeaturedDropProps> = ({
           <div className="mt-4">
             <CountdownDisplay date={drop.date} size="lg" />
           </div>
-          <p className="mt-4 font-mono text-10 uppercase tracking-label text-steel">
-            {formatDateTime(drop.date)} · {drop.mintWindow}
-          </p>
         </div>
 
         <dl
