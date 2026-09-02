@@ -103,8 +103,8 @@ export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
       }
 
       {shouldMount && !loaded &&
-      <span className="pointer-events-none absolute bottom-4 left-1/2 z-20 -translate-x-1/2 bg-ink/90 px-3 py-2 font-mono text-10 uppercase tracking-meta text-bone">
-          Loading interactive preview
+      <span className="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 bg-ink/80 px-3 py-2 font-mono text-10 uppercase tracking-meta text-bone animate-pulse">
+          Loading Preview
         </span>
       }
     </div>
