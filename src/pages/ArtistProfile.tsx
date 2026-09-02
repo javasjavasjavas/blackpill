@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { CheckCircle2Icon, Globe2Icon, Layers3Icon } from 'lucide-react';
+import { CheckCircle2Icon, Globe2Icon } from 'lucide-react';
 import { Portrait } from '../components/art/Portrait';
 import { CollectionCard } from '../components/collections/CollectionCard';
 import { DropRow } from '../components/drops/DropRow';
 import { SocialIcon } from '../components/ui/SocialIcon';
 import { Label } from '../components/ui/Label';
-import { Tag } from '../components/ui/Tag';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { Reveal } from '../components/ui/Reveal';
 import { NotFound } from './NotFound';
@@ -87,73 +86,28 @@ export const ArtistProfile: React.FC = () => {
                 {artist.focus}
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-1.5">
-                {artist.disciplines.map((d) =>
-                <Tag key={d}>{d}</Tag>
-                )}
-              </div>
-
-              <ul className="mt-10 grid border-y bp-rule sm:grid-cols-3">
-                <li className="border-b bp-rule sm:border-b-0 sm:border-r">
-                  <a
-                    href="#works-title"
-                    className="group flex min-h-24 items-center gap-4 px-4 py-5 transition-colors duration-150 hover:bg-white/[0.03]">
-                    <Layers3Icon className="h-5 w-5 shrink-0 text-steel group-hover:text-paper" strokeWidth={1.5} />
-                    <span>
-                      <span className="block font-mono text-10 uppercase tracking-label text-steel">Collections</span>
-                      <span className="mt-1.5 block font-display text-xl font-extrabold tabular-nums text-paper">
-                        {works.length}
-                      </span>
-                    </span>
+              <div className="mt-10 flex flex-wrap gap-3">
+                {websiteUrl &&
+                <a
+                  href={websiteUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="group inline-flex min-h-12 items-center gap-3 border border-white/20 px-5 py-3 font-mono text-10 uppercase tracking-meta text-bone transition-colors duration-150 hover:border-paper hover:text-paper">
+                    <Globe2Icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+                    <span>Website</span>
                   </a>
-                </li>
-
-                <li className="border-b bp-rule sm:border-b-0 sm:border-r">
-                  {websiteUrl ?
-                  <a
-                    href={websiteUrl}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="group flex min-h-24 items-center gap-4 px-4 py-5 transition-colors duration-150 hover:bg-white/[0.03]">
-                      <Globe2Icon className="h-5 w-5 shrink-0 text-steel group-hover:text-paper" strokeWidth={1.5} />
-                      <span className="min-w-0">
-                        <span className="block font-mono text-10 uppercase tracking-label text-steel">Website</span>
-                        <span className="mt-1.5 block truncate font-mono text-[12px] text-paper">{artist.links.website}</span>
-                      </span>
-                    </a> :
-                  <div className="flex min-h-24 items-center gap-4 px-4 py-5">
-                      <Globe2Icon className="h-5 w-5 shrink-0 text-steel" strokeWidth={1.5} />
-                      <span>
-                        <span className="block font-mono text-10 uppercase tracking-label text-steel">Website</span>
-                        <span className="mt-1.5 block font-mono text-[12px] text-smoke">—</span>
-                      </span>
-                    </div>
-                  }
-                </li>
-
-                <li>
-                  {xUrl ?
-                  <a
-                    href={xUrl}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="group flex min-h-24 items-center gap-4 px-4 py-5 transition-colors duration-150 hover:bg-white/[0.03]">
-                      <SocialIcon network="x" className="h-5 w-5 shrink-0 text-steel group-hover:text-paper" />
-                      <span className="min-w-0">
-                        <span className="block font-mono text-10 uppercase tracking-label text-steel">X account</span>
-                        <span className="mt-1.5 block truncate font-mono text-[12px] text-paper">{artist.links.x}</span>
-                      </span>
-                    </a> :
-                  <div className="flex min-h-24 items-center gap-4 px-4 py-5">
-                      <SocialIcon network="x" className="h-5 w-5 shrink-0 text-steel" />
-                      <span>
-                        <span className="block font-mono text-10 uppercase tracking-label text-steel">X account</span>
-                        <span className="mt-1.5 block font-mono text-[12px] text-smoke">—</span>
-                      </span>
-                    </div>
-                  }
-                </li>
-              </ul>
+                }
+                {xUrl &&
+                <a
+                  href={xUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="group inline-flex min-h-12 items-center gap-3 border border-white/20 px-5 py-3 font-mono text-10 uppercase tracking-meta text-bone transition-colors duration-150 hover:border-paper hover:text-paper">
+                    <SocialIcon network="x" className="h-4 w-4 shrink-0" />
+                    <span>X</span>
+                  </a>
+                }
+              </div>
             </div>
           </div>
         </div>

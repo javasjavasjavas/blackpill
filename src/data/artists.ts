@@ -8,12 +8,14 @@ export const artists: Artist[] = [
   verified: false,
   disciplines: ['Digital Artist', 'UX/UI Designer', 'Front-End Developer'],
   focus: 'Digital Artist · UX/UI Designer · Front-End Developer',
-  bio: "Javier D'Amico is a Buenos Aires–based digital artist, UX/UI designer and front-end developer.",
+  bio: "Javier D'Amico is a Buenos Aires–based digital artist, UX/UI designer and front-end developer with more than 20 years of experience.",
   longBio: [
-    "Javier D'Amico works across digital art, interface design and front-end development from Buenos Aires, Argentina."
+    "Javier D'Amico is a Buenos Aires–based digital artist, UX/UI designer and front-end developer with more than 20 years of experience creating digital products. His work explores the dialogue between human creativity and an increasingly digital world, resulting in immersive and visually striking experiences.",
+    'As an artist, he works with atmosphere and nostalgia, blending Japanese aesthetics, typography and retro-futurist elements. As a builder, he brings functionality and aesthetics together to create clean digital experiences that are robust, efficient and visually refined.',
+    'A crypto-native creator and active member of the Web3 community since 2019, he has contributed to the space as an artist, founder and builder.'
   ],
   statement: 'Digital art, interface design and front-end development are one continuous practice.',
-  links: { x: '@javpixel_art' },
+  links: { website: 'javstuff.com', x: '@javpixel_art' },
   wallet: '—',
   ens: '—',
   joined: '2026-09-01',
