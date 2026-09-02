@@ -2,6 +2,7 @@ import React from 'react';
 import { ArtCanvas } from '../art/ArtCanvas';
 import { Label } from '../ui/Label';
 import { Reveal } from '../ui/Reveal';
+import { DeferredIframe } from '../ui/DeferredIframe';
 import type { Artist, Collection } from '../../types';
 
 interface CollectionStoryProps {
@@ -63,7 +64,7 @@ export const CollectionStory: React.FC<CollectionStoryProps> = ({ collection, ar
                         <div
                           key={preview}
                           className="relative aspect-square w-full overflow-hidden border bp-rule">
-                          <iframe
+                          <DeferredIframe
                             src={htmlPreviewUrl}
                             title={`Districts live HTML preview ${preview}`}
                             className="pointer-events-none absolute inset-0 h-full w-full border-0 bg-[#06070a]"

@@ -115,12 +115,12 @@ export const About: React.FC = () => {
                 {[
               { id: 'sub-name', label: 'Artist or studio', type: 'text' },
               { id: 'sub-email', label: 'Email', type: 'email' },
-              { id: 'sub-link', label: 'Contract, repo or prototype URL', type: 'text' }].
+              { id: 'sub-link', label: 'Collection, repository or prototype URL', type: 'text' }].
               map((field) =>
               <div key={field.id}>
                     <label
                   htmlFor={field.id}
-                  className="font-mono text-10 uppercase tracking-label text-steel">
+                  className="font-mono text-10 uppercase tracking-label text-smoke">
                   
                       {field.label}
                     </label>
@@ -135,7 +135,7 @@ export const About: React.FC = () => {
                 <div>
                   <label
                   htmlFor="sub-idea"
-                  className="font-mono text-10 uppercase tracking-label text-steel">
+                  className="font-mono text-10 uppercase tracking-label text-smoke">
                   
                     What does the work do that a static file cannot?
                   </label>

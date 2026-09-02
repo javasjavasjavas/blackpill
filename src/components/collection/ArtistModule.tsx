@@ -9,7 +9,7 @@ import { Tag } from '../ui/Tag';
 import { ArtistLinks } from '../artists/ArtistLinks';
 import { collectionsByArtist } from '../../data/collections';
 import type { Artist } from '../../types';
-import { formatPrice, truncateAddress } from '../../utils/format';
+import { formatPrice } from '../../utils/format';
 
 interface ArtistModuleProps {
   artist: Artist;
@@ -67,19 +67,6 @@ export const ArtistModule: React.FC<ArtistModuleProps> = ({ artist, currentSlug 
             </div>
 
             <ArtistLinks artist={artist} className="mt-6" />
-
-            <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-4 border-t bp-rule pt-5">
-              <div>
-                <dt className="font-mono text-10 uppercase tracking-label text-steel">ENS</dt>
-                <dd className="mt-1 font-mono text-[13px] text-paper">{artist.ens}</dd>
-              </div>
-              <div>
-                <dt className="font-mono text-10 uppercase tracking-label text-steel">Wallet</dt>
-                <dd className="mt-1 font-mono text-[13px] text-paper">
-                  {truncateAddress(artist.wallet, 10, 6)}
-                </dd>
-              </div>
-            </dl>
 
             <ActionButton to={`/artist/${artist.slug}`} variant="outline" className="mt-7">
               View Full Profile
