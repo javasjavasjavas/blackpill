@@ -69,7 +69,9 @@ export const CollectionStory: React.FC<CollectionStoryProps> = ({ collection, ar
                             title={`Districts live HTML preview ${preview}`}
                             className="pointer-events-none absolute inset-0 h-full w-full border-0 bg-[#06070a]"
                             sandbox="allow-scripts allow-same-origin"
-                            loading="lazy" />
+                            loading="lazy"
+                            rootMargin="100px 0px"
+                            delayMs={preview * 500} />
                         </div>
                         )}
                       </div> :

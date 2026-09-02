@@ -313,7 +313,7 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
             map((m) =>
             <div key={m.k}>
                 <dt className="font-mono text-10 uppercase tracking-label text-steel">{m.k}</dt>
-                <dd className="mt-1.5 font-mono text-[13px] text-paper">{m.v}</dd>
+                <dd className="mt-1.5 font-mono text-[13px] uppercase text-paper">{m.v}</dd>
               </div>
             )}
           </dl>
