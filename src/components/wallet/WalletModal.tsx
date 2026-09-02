@@ -102,8 +102,8 @@ export const WalletModal: React.FC = () => {
               <li key={option.id}>
                       <button
                   type="button"
-                  onClick={() => connect(option.id)}
-                  className="group flex w-full items-center justify-between border-t bp-rule py-3.5 text-left transition-colors duration-150 hover:bg-white/[0.04]">
+                  disabled
+                  className="flex w-full cursor-not-allowed items-center justify-between border-t bp-rule py-3.5 text-left opacity-60">
                   
                         <span>
                           <span className="block font-display text-base font-bold tracking-tight text-paper">
@@ -113,8 +113,8 @@ export const WalletModal: React.FC = () => {
                             {option.detail}
                           </span>
                         </span>
-                        <span className="font-mono text-10 uppercase tracking-meta text-smoke transition-transform duration-150 ease-swift group-hover:translate-x-0.5">
-                          {option.installed ? 'Connect →' : 'Detect →'}
+                        <span className="border border-white/15 px-2 py-1 font-mono text-[8px] uppercase tracking-meta text-smoke">
+                          Soon
                         </span>
                       </button>
                     </li>
