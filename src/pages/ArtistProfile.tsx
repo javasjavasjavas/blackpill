@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router-dom';
 import { CheckCircle2Icon, Globe2Icon } from 'lucide-react';
 import { Portrait } from '../components/art/Portrait';
 import { CollectionCard } from '../components/collections/CollectionCard';
-import { DropRow } from '../components/drops/DropRow';
 import { SocialIcon } from '../components/ui/SocialIcon';
 import { Label } from '../components/ui/Label';
 import { SectionHeading } from '../components/ui/SectionHeading';
@@ -11,7 +10,6 @@ import { Reveal } from '../components/ui/Reveal';
 import { NotFound } from './NotFound';
 import { getArtist } from '../data/artists';
 import { collectionsByArtist } from '../data/collections';
-import { drops } from '../data/drops';
 
 export const ArtistProfile: React.FC = () => {
   const { slug } = useParams<{slug: string;}>();
@@ -32,12 +30,6 @@ export const ArtistProfile: React.FC = () => {
     null;
   const xHandle = artist.links.x?.replace(/^@/, '');
   const xUrl = xHandle ? `https://x.com/${xHandle}` : null;
-  const upcoming = drops.filter(
-    (d) =>
-    (d.phase === 'Upcoming' || d.phase === 'Allowlist') &&
-    works.some((w) => w.slug === d.collectionSlug)
-  );
-
   return (
     <div>
       {/* Header */}
@@ -94,7 +86,7 @@ export const ArtistProfile: React.FC = () => {
                   rel="noreferrer noopener"
                   className="group inline-flex min-h-12 items-center gap-3 border border-white/20 px-5 py-3 font-mono text-10 uppercase tracking-meta text-bone transition-colors duration-150 hover:border-paper hover:text-paper">
                     <Globe2Icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
-                    <span>Website</span>
+                    <span>{artist.links.website}</span>
                   </a>
                 }
                 {xUrl &&
@@ -104,7 +96,7 @@ export const ArtistProfile: React.FC = () => {
                   rel="noreferrer noopener"
                   className="group inline-flex min-h-12 items-center gap-3 border border-white/20 px-5 py-3 font-mono text-10 uppercase tracking-meta text-bone transition-colors duration-150 hover:border-paper hover:text-paper">
                     <SocialIcon network="x" className="h-4 w-4 shrink-0" />
-                    <span>X</span>
+                    <span>{artist.links.x}</span>
                   </a>
                 }
               </div>
@@ -132,8 +124,7 @@ export const ArtistProfile: React.FC = () => {
             )}
 
             <blockquote className="mt-6 border-t bp-rule pt-10">
-              <Label as="div">Featured statement</Label>
-              <p className="mt-5 max-w-3xl text-[clamp(1.5rem,2.8vw,2.5rem)] font-medium leading-[1.08] tracking-tight text-paper">
+              <p className="max-w-3xl text-[clamp(1.5rem,2.8vw,2.5rem)] font-medium leading-[1.08] tracking-tight text-paper">
                 “{artist.statement}”
               </p>
             </blockquote>
@@ -161,51 +152,11 @@ export const ArtistProfile: React.FC = () => {
         </div>
       </section>
 
-      {/* Upcoming drops */}
-      {upcoming.length > 0 &&
-      <section
-        aria-labelledby="artist-drops-title"
-        className="mx-auto max-w-frame px-5 py-12 lg:px-10 lg:py-16">
-        
-          <SectionHeading id="artist-drops-title" index="Scheduled" title="Upcoming drops" />
-          <div className="mt-8">
-            {upcoming.map((d) => {
-            const collection = works.find((w) => w.slug === d.collectionSlug);
-            return collection ?
-            <DropRow key={d.id} drop={d} collection={collection} /> :
-            null;
-          })}
-          </div>
-        </section>
-      }
-
-      {/* External work + notes */}
+      {/* Studio notes */}
+      {artist.notes &&
       <section className="mx-auto max-w-frame px-5 py-12 lg:px-10 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-x-10">
-          <div className="lg:col-span-5">
-            <SectionHeading index="Elsewhere" title="Selected work" />
-            <ul className="mt-6">
-              {artist.externalWork.map((w) =>
-              <li
-                key={`${w.title}-${w.year}`}
-                className="flex items-baseline justify-between gap-6 border-t bp-rule py-4">
-                
-                  <span>
-                    <span className="block text-[15px] font-bold uppercase tracking-tight text-paper">
-                      {w.title}
-                    </span>
-                    <span className="mt-1 block font-mono text-10 uppercase tracking-meta text-smoke">
-                      {w.venue}
-                    </span>
-                  </span>
-                  <span className="font-mono text-10 tabular-nums text-steel">{w.year}</span>
-                </li>
-              )}
-            </ul>
-          </div>
-
-          {artist.notes &&
-          <div className="lg:col-span-6 lg:col-start-7">
+          <div className="lg:col-span-8 lg:col-start-5">
               <SectionHeading index="Studio notes" title="In conversation" />
               <dl className="mt-6">
                 {artist.notes.map((note) =>
@@ -220,9 +171,9 @@ export const ArtistProfile: React.FC = () => {
               )}
               </dl>
             </div>
-          }
         </div>
       </section>
+      }
     </div>);
 
 };

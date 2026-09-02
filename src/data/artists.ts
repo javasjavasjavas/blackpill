@@ -14,7 +14,7 @@ export const artists: Artist[] = [
     'As an artist, he works with atmosphere and nostalgia, blending Japanese aesthetics, typography and retro-futurist elements. As a builder, he brings functionality and aesthetics together to create clean digital experiences that are robust, efficient and visually refined.',
     'A crypto-native creator and active member of the Web3 community since 2019, he has contributed to the space as an artist, founder and builder.'
   ],
-  statement: 'Digital art, interface design and front-end development are one continuous practice.',
+  statement: 'Everything starts with some basic shapes.',
   links: { website: 'javstuff.com', x: '@javpixel_art' },
   wallet: '—',
   ens: '—',
