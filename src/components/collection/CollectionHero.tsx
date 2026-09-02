@@ -12,10 +12,10 @@ import {
 import { ArtCanvas } from '../art/ArtCanvas';
 import { ActionButton } from '../ui/ActionButton';
 import { CountdownDisplay } from '../ui/CountdownDisplay';
+import { DistrictsPreview } from '../ui/DistrictsPreview';
 import { Label } from '../ui/Label';
 import { StatusBadge } from '../ui/StatusBadge';
 import { Tag } from '../ui/Tag';
-import { DeferredIframe } from '../ui/DeferredIframe';
 import { useWallet } from '../../contexts/WalletContext';
 import type { Artist, Collection } from '../../types';
 import { cn, formatDateTime, formatNumber, formatPrice, truncateAddress } from '../../utils/format';
@@ -106,11 +106,10 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
         <div className="lg:col-span-7 xl:col-span-8">
           <div className={cn('relative w-full overflow-hidden border bp-rule', htmlPreviewUrl ? 'aspect-square' : 'aspect-[4/3]')}>
             {htmlPreviewUrl ?
-            <DeferredIframe
-              src={htmlPreviewUrl}
-              title={`Interactive preview of ${collection.title}`}
-              className="absolute inset-0 h-full w-full border-0 bg-[#06070a]"
-              sandbox="allow-scripts allow-same-origin"
+            <DistrictsPreview
+              title={collection.title}
+              className="absolute inset-0"
+              interactive
             /> :
             <ArtCanvas
               variant={collection.art.variant}
@@ -133,7 +132,7 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
           </div>
           <p className="mt-3 font-mono text-10 uppercase tracking-label text-steel">
             {htmlPreviewUrl ?
-            'Interactive HTML preview rendered live in the browser.' :
+            'Static preview shown by default. Load the interactive HTML only when you want to explore it.' :
             'Preview generated in-browser from the same rule set as the contract renderer. Interaction and audio are available inside the token view.'}
           </p>
         </div>

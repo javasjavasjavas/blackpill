@@ -1,8 +1,8 @@
 import React from 'react';
 import { ArtCanvas } from '../art/ArtCanvas';
+import { DistrictsPreview } from '../ui/DistrictsPreview';
 import { Label } from '../ui/Label';
 import { Reveal } from '../ui/Reveal';
-import { DeferredIframe } from '../ui/DeferredIframe';
 import type { Artist, Collection } from '../../types';
 
 interface CollectionStoryProps {
@@ -64,14 +64,11 @@ export const CollectionStory: React.FC<CollectionStoryProps> = ({ collection, ar
                         <div
                           key={preview}
                           className="relative aspect-square w-full overflow-hidden border bp-rule">
-                          <DeferredIframe
-                            src={htmlPreviewUrl}
-                            title={`Districts live HTML preview ${preview}`}
-                            className="pointer-events-none absolute inset-0 h-full w-full border-0 bg-[#06070a]"
-                            sandbox="allow-scripts allow-same-origin"
-                            loading="lazy"
-                            rootMargin="100px 0px"
-                            delayMs={preview * 500} />
+                          <DistrictsPreview
+                            title={`Districts sample ${preview}`}
+                            className="absolute inset-0"
+                            interactive
+                          />
                         </div>
                         )}
                       </div> :
@@ -87,7 +84,7 @@ export const CollectionStory: React.FC<CollectionStoryProps> = ({ collection, ar
                     }
                     <figcaption className="mt-3 font-mono text-10 uppercase tracking-label text-steel">
                       {collection.slug === 'districts' ?
-                      'Two live Districts rendered side by side from the interactive HTML.' :
+                      'Two Districts previews. Load either interactive HTML only when you want to explore it.' :
                       <>Fig. 01 — Second sample from the same rule set, different seed.{' '}
                           {collection.spec.rendering}.</>
                       }

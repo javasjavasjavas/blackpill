@@ -4,9 +4,9 @@ import { ArrowRightIcon, BellIcon } from 'lucide-react';
 import { ArtCanvas } from '../art/ArtCanvas';
 import { ActionButton } from '../ui/ActionButton';
 import { CountdownDisplay } from '../ui/CountdownDisplay';
+import { DistrictsPreview } from '../ui/DistrictsPreview';
 import { Label } from '../ui/Label';
 import { Tag } from '../ui/Tag';
-import { DeferredIframe } from '../ui/DeferredIframe';
 import { getArtist } from '../../data/artists';
 import type { Collection, Drop } from '../../types';
 import { cn, formatDateTime, formatNumber, formatPrice } from '../../utils/format';
@@ -49,12 +49,9 @@ export const FeaturedDrop: React.FC<FeaturedDropProps> = ({
               htmlPreviewUrl ? 'aspect-square' : 'aspect-[16/11]'
             )}>
             {htmlPreviewUrl ?
-            <DeferredIframe
-              src={htmlPreviewUrl}
-              title={`Interactive preview of ${collection.title}`}
-              className="pointer-events-none absolute inset-0 h-full w-full border-0 bg-[#06070a]"
-              sandbox="allow-scripts allow-same-origin"
-              tabIndex={-1}
+            <DistrictsPreview
+              title={collection.title}
+              className="absolute inset-0"
             /> :
             <ArtCanvas
               variant={collection.art.variant}
