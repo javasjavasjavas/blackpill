@@ -31,7 +31,7 @@ export const CollectionDetail: React.FC = () => {
       <CollectionStory collection={collection} artist={artist} />
       <TokenBrowser collection={collection} />
       <ArtistModule artist={artist} currentSlug={collection.slug} />
-      <RelatedExperiments collection={collection} />
+      {collection.slug !== 'districts' && <RelatedExperiments collection={collection} />}
     </>);
 
 };

@@ -53,6 +53,8 @@ export const TokenBrowser: React.FC<TokenBrowserProps> = ({ collection }) => {
   const loading = useSimulatedLoad([query, traitFilter, listedOnly, sort], 320);
   const activeTraits = Object.values(traitFilter).filter(Boolean).length;
   const listedCount = all.filter((t) => t.listed).length;
+  const isDistricts = collection.slug === 'districts';
+  const displayResults = isDistricts ? results.slice(0, 6) : results;
 
   return (
     <section
@@ -62,10 +64,13 @@ export const TokenBrowser: React.FC<TokenBrowserProps> = ({ collection }) => {
       <SectionHeading
         id="tokens-title"
         index="Tokens"
-        title="Browse the edition"
-        description={`${all.length} indexed tokens · ${listedCount} currently listed. Every preview is rendered from that token's own seed.`} />
+        title={isDistricts ? 'Browse the collection' : 'Browse the edition'}
+        description={isDistricts ?
+        'A selection of example cities from the collection.' :
+        `${all.length} indexed tokens · ${listedCount} currently listed. Every preview is rendered from that token's own seed.`} />
       
 
+      {!isDistricts &&
       <div className="mt-8 flex flex-wrap items-center gap-3 border-b bp-rule pb-4">
         <div className="flex min-w-[160px] flex-1 items-center gap-2.5 border border-white/20 px-3 focus-within:border-paper">
           <SearchIcon className="h-4 w-4 shrink-0 text-smoke" strokeWidth={1.5} />
@@ -140,7 +145,9 @@ export const TokenBrowser: React.FC<TokenBrowserProps> = ({ collection }) => {
           </select>
         </div>
       </div>
+      }
 
+      {!isDistricts &&
       <div className="flex items-baseline justify-between py-4">
         <Label>
           {loading ? 'Reading contract…' : `${results.length} tokens`}
@@ -160,10 +167,11 @@ export const TokenBrowser: React.FC<TokenBrowserProps> = ({ collection }) => {
           </button>
         }
       </div>
+      }
 
       {loading ?
       <div className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
-          {Array.from({ length: 12 }).map((_, i) =>
+          {Array.from({ length: isDistricts ? 6 : 12 }).map((_, i) =>
         <div key={i}>
               <Skeleton className="aspect-square w-full" />
               <Skeleton className="mt-2.5 h-3 w-1/2" />
@@ -191,8 +199,8 @@ export const TokenBrowser: React.FC<TokenBrowserProps> = ({ collection }) => {
           </ActionButton>
         </div> :
 
-      <ul className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
-          {results.map((token, i) =>
+      <ul className={cn('grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-6', isDistricts && 'mt-8')}>
+          {displayResults.map((token, i) =>
         <li key={token.id}>
               <TokenCard token={token} collection={collection} onOpen={() => setOpenIndex(i)} />
             </li>
@@ -201,13 +209,13 @@ export const TokenBrowser: React.FC<TokenBrowserProps> = ({ collection }) => {
       }
 
       <TokenModal
-        token={openIndex === null ? null : results[openIndex] ?? null}
+        token={openIndex === null ? null : displayResults[openIndex] ?? null}
         collection={collection}
         onClose={() => setOpenIndex(null)}
         onPrev={() =>
-        setOpenIndex((i) => i === null ? null : (i - 1 + results.length) % results.length)
+        setOpenIndex((i) => i === null ? null : (i - 1 + displayResults.length) % displayResults.length)
         }
-        onNext={() => setOpenIndex((i) => i === null ? null : (i + 1) % results.length)} />
+        onNext={() => setOpenIndex((i) => i === null ? null : (i + 1) % displayResults.length)} />
       
     </section>);
 

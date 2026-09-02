@@ -16,6 +16,8 @@ const DEFINITIONS: Record<string, string> = {
   'Everything needed to display the work — the image or code, and its metadata — is stored inside the smart contract. Nothing is hosted on a server, so the artwork survives as long as the blockchain does.',
   'Partially On-Chain':
   'Some parts live in the contract (usually the traits or state) while the renderer or media is stored elsewhere, such as IPFS or Arweave.',
+  'Off-chain':
+  'The artwork and its interactive renderer are hosted outside the blockchain.',
   Dynamic:
   'The work changes after it is minted. Change can be triggered by transfers, a schedule, holder activity, or data from outside the blockchain.',
   Interactive:
@@ -28,7 +30,13 @@ const DEFINITIONS: Record<string, string> = {
 
 const classify = (collection: Collection): string[] => {
   const labels: string[] = [];
-  labels.push(collection.spec.storage === 'Fully On-Chain' ? 'Fully On-Chain' : 'Partially On-Chain');
+  labels.push(
+    collection.spec.storage === 'Fully On-Chain' ?
+    'Fully On-Chain' :
+    collection.spec.storage === 'Off-chain' ?
+    'Off-chain' :
+    'Partially On-Chain'
+  );
   if (collection.tech.includes('Dynamic')) labels.push('Dynamic');
   if (collection.tech.includes('Interactive HTML') || collection.tech.includes('Game'))
   labels.push('Interactive');

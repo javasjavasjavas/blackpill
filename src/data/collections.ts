@@ -272,7 +272,7 @@ export const collections: Collection[] = [
   artistSlug: 'javier-damico',
   concept: 'Interactive, generative coded cities, including real-time data for the viewer as Currencies prices, Local Weather and more.',
   summary:
-  'Eight hundred and eight instruments tuned to the mempool. Congestion becomes rhythm, gas volatility becomes timbre; nothing is ever rendered to a file.',
+  'A collection of interactive, generative coded cities shaped by live information, including market prices, local weather and time.',
   tech: ['Generative', 'Animated', 'Interactive', 'Live Data'],
   categories: ['generative', 'interactive', 'data-driven'],
   status: 'Allowlist',
@@ -286,26 +286,26 @@ export const collections: Collection[] = [
     chain: 'Ethereum',
     contract: '0x6Bd3F02aC17e94b58Ac1d7E306f2B84a9C05E1D7',
     tokenStandard: 'ERC-721',
-    storage: 'Partially On-Chain',
-    metadataLocation: 'Synthesis parameters on-chain, renderer on Arweave',
-    format: 'Audio / WebAudio',
-    rendering: 'WebAudio graph + canvas oscilloscope, generated at playback',
-    dynamicBehavior: 'Composition changes with live network conditions at every listen',
+    storage: 'Off-chain',
+    metadataLocation: 'Off-chain metadata and interactive renderer',
+    format: 'Interactive HTML / Canvas',
+    rendering: 'Browser-based generative HTML and JavaScript renderer',
+    dynamicBehavior: 'Live weather, time and market data alter the city at every viewing',
     license: 'CC BY-NC 4.0',
     royalty: '10% — split with two collaborators',
     releaseDate: '02 Sep 2026'
   },
   story: {
-    idea: 'Nandan performs with infrastructure. Signal / Noise treats pending transactions as a score already being written and builds an instrument capable of reading it.',
+    idea: 'Districts explores the city as a living digital system rather than a fixed image. Each work combines architecture, atmosphere and information to create a place that feels active, local and continuously connected to the world outside the screen.',
     howItWorks:
-    'Each token stores a synthesis patch: oscillator set, filter topology, tuning system and a mapping from network metrics to parameters. At playback the renderer samples live block timing, pending transaction count and fee volatility, and drives the patch with them.',
+    'Each District is generated in the browser from code. Procedural architecture defines the city while animation and live inputs—including time, local weather and market prices—change its light, mood and visible information whenever it is viewed.',
     innovation:
-    'There is no fixed audio file and no recording. Two listens minutes apart produce measurably different compositions, and a quiet network produces genuine near-silence. The work refuses the idea that an audio NFT must be a static asset.',
+    'Live information is not presented as a separate dashboard placed over an artwork; it becomes part of the artwork itself. The city uses changing data as a creative material, allowing the same composition to remain recognizable while never appearing exactly the same twice.',
     ownership:
-    'Owners can publish a signed "session" — a timestamped capture of the network conditions during a listen — which anyone can replay exactly. Sessions are the only way the work becomes fixed, and only holders can create them.',
+    'Each edition represents a distinct coded city with its own visual identity. Its underlying composition persists, while real-world conditions introduce new moments, colors and rhythms every time the work is opened.',
     process:
-    'Built with a custom WebAudio graph compiler; tuning systems drawn from Carnatic ratios alongside equal temperament. Nandan tested the instrument in three live performances before minting.',
-    artistStatement: 'The chain is already making a sound. I only built the room where you can hear it.'
+    'Districts is built as an interactive HTML experience using a custom JavaScript renderer. Parametric buildings, layered animation, a neon visual system and live data sources are composed in real time directly in the viewer’s browser.',
+    artistStatement: 'A city is never a still image. It is a system of structures, signals and changing conditions.'
   },
   traits: [
   { name: 'Patch', values: ['Drone', 'Pulse', 'Bell', 'Voice'] },

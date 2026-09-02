@@ -32,6 +32,9 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
   const [quantity, setQuantity] = useState(1);
   const [reminded, setReminded] = useState(false);
   const [shared, setShared] = useState(false);
+  const htmlPreviewUrl = collection.art.htmlPreview ?
+    `${import.meta.env.BASE_URL}${collection.art.htmlPreview}` :
+    null;
 
   const upcoming = collection.status === 'Upcoming' || collection.status === 'Allowlist';
   const closed = collection.status === 'Sold Out' || collection.status === 'Closed';
@@ -100,7 +103,14 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
       <div className="grid gap-8 py-10 lg:grid-cols-12 lg:gap-x-10">
         {/* Artwork */}
         <div className="lg:col-span-7 xl:col-span-8">
-          <div className="relative aspect-[4/3] w-full overflow-hidden border bp-rule">
+          <div className={cn('relative w-full overflow-hidden border bp-rule', htmlPreviewUrl ? 'aspect-square' : 'aspect-[4/3]')}>
+            {htmlPreviewUrl ?
+            <iframe
+              src={htmlPreviewUrl}
+              title={`Interactive preview of ${collection.title}`}
+              className="absolute inset-0 h-full w-full border-0 bg-[#06070a]"
+              sandbox="allow-scripts allow-same-origin"
+            /> :
             <ArtCanvas
               variant={collection.art.variant}
               accent={collection.art.accent}
@@ -108,7 +118,8 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
               size="hero"
               className="absolute inset-0 h-full w-full"
               label={`Live preview of ${collection.title} by ${artist.name}`} />
-            
+            }
+            {!htmlPreviewUrl &&
             <div className="pointer-events-none absolute inset-x-0 top-0 flex items-center justify-between p-4">
               <span className="bg-ink/85 px-2 py-1 font-mono text-10 uppercase tracking-meta text-bone">
                 {collection.spec.format} · live render
@@ -117,10 +128,12 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
                 <StatusBadge status={collection.status} />
               </span>
             </div>
+            }
           </div>
           <p className="mt-3 font-mono text-10 uppercase tracking-label text-steel">
-            Preview generated in-browser from the same rule set as the contract renderer. Interaction
-            and audio are available inside the token view.
+            {htmlPreviewUrl ?
+            'Interactive HTML preview rendered live in the browser.' :
+            'Preview generated in-browser from the same rule set as the contract renderer. Interaction and audio are available inside the token view.'}
           </p>
         </div>
 
@@ -169,9 +182,11 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
                     <BellIcon className="h-4 w-4" strokeWidth={1.5} />
                     {reminded ? 'Reminder set' : 'Get Reminder'}
                   </ActionButton>
+                  {collection.slug !== 'districts' &&
                   <ActionButton variant="outline" onClick={openModal}>
-                    Check allowlist
-                  </ActionButton>
+                      Check allowlist
+                    </ActionButton>
+                  }
                 </div>
               </div> :
 
@@ -291,6 +306,8 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
             {[
             { k: 'Supply', v: collection.supply ? formatNumber(collection.supply) : 'Open edition' },
             { k: 'Storage', v: collection.spec.storage },
+            collection.slug === 'districts' ?
+            { k: 'Chain', v: collection.spec.chain } :
             { k: 'Standard', v: collection.spec.tokenStandard },
             { k: 'Released', v: collection.spec.releaseDate }].
             map((m) =>
