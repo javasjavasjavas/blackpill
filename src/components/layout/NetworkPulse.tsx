@@ -85,8 +85,8 @@ export const NetworkPulse: React.FC = () => {
         <span className="flex h-4 w-4 items-center justify-center border border-[#818cf8]/35 bg-[#818cf8]/10 text-[#a5b4fc]">
           <DiamondIcon className="h-2.5 w-2.5" strokeWidth={1.7} />
         </span>
-        <span className="text-steel">ETH</span>
-        <span className="tabular-nums text-paper">
+        <span className="text-smoke">ETH</span>
+        <span className="tabular-nums text-smoke">
           {metrics.ethUsd === null ? '—' : usdFormatter.format(metrics.ethUsd)}
         </span>
       </span>
@@ -95,8 +95,8 @@ export const NetworkPulse: React.FC = () => {
         <span className="flex h-4 w-4 items-center justify-center border border-[#ff4d00]/35 bg-[#ff4d00]/10 text-[#ff6b2c]">
           <FlameIcon className="h-2.5 w-2.5" strokeWidth={1.7} />
         </span>
-        <span className="text-steel">Gas</span>
-        <span className="tabular-nums text-paper">{formatGas(metrics.gasGwei)} Gwei</span>
+        <span className="text-smoke">Gas</span>
+        <span className="tabular-nums text-smoke">{formatGas(metrics.gasGwei)} Gwei</span>
       </span>
     </div>
   );

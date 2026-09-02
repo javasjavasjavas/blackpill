@@ -56,6 +56,19 @@ export const TokenBrowser: React.FC<TokenBrowserProps> = ({ collection }) => {
   const isDistricts = collection.slug === 'districts';
   const displayResults = isDistricts ? results.slice(0, 6) : results;
 
+  if (isDistricts) {
+    return (
+      <section
+        aria-labelledby="tokens-title"
+        className="mx-auto max-w-frame px-5 py-16 lg:px-10 lg:py-20">
+        <SectionHeading id="tokens-title" index="Tokens" title="Browse the collection" />
+        <div className="mt-8 border-y bp-rule py-16 text-center">
+          <p className="text-lg text-bone">Nothing has been minted yet. Check back later.</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       aria-labelledby="tokens-title"

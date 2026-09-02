@@ -41,7 +41,7 @@ export const Nav: React.FC = () => {
           )}>
           
           <div className="mx-auto flex h-7 max-w-frame items-center justify-between px-5 lg:px-10">
-            <span className="font-mono text-10 uppercase tracking-label text-steel">
+            <span className="font-mono text-10 uppercase tracking-label text-smoke">
               Black Pill Labs — Experimental Digital Assets
             </span>
             <NetworkPulse />
