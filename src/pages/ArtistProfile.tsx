@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { CheckCircle2Icon, Globe2Icon } from 'lucide-react';
 import { Portrait } from '../components/art/Portrait';
-import { CollectionCard } from '../components/collections/CollectionCard';
+import { FeaturedDrop } from '../components/drops/FeaturedDrop';
 import { SocialIcon } from '../components/ui/SocialIcon';
 import { Label } from '../components/ui/Label';
 import { SectionHeading } from '../components/ui/SectionHeading';
@@ -10,6 +10,7 @@ import { Reveal } from '../components/ui/Reveal';
 import { NotFound } from './NotFound';
 import { getArtist } from '../data/artists';
 import { collectionsByArtist } from '../data/collections';
+import { dropForCollection } from '../data/drops';
 
 export const ArtistProfile: React.FC = () => {
   const { slug } = useParams<{slug: string;}>();
@@ -143,12 +144,15 @@ export const ArtistProfile: React.FC = () => {
           title="Collections"
           description={`${works.length} ${works.length === 1 ? 'release' : 'releases'} on Black Pill.`} />
         
-        <div className="mt-10 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-          {works.map((c, i) =>
-          <Reveal key={c.slug} delay={i * 0.04}>
-              <CollectionCard collection={c} />
-            </Reveal>
-          )}
+        <div className="mt-10 space-y-16">
+          {works.map((collection, i) => {
+            const drop = dropForCollection(collection.slug);
+            return drop ?
+            <Reveal key={collection.slug} delay={i * 0.04}>
+                <FeaturedDrop drop={drop} collection={collection} />
+              </Reveal> :
+            null;
+          })}
         </div>
       </section>
 
