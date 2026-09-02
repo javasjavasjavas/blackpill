@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { FeaturedDrop } from '../components/drops/FeaturedDrop';
-import { DropRow } from '../components/drops/DropRow';
 import { Label } from '../components/ui/Label';
 import { ActionButton } from '../components/ui/ActionButton';
 import { drops } from '../data/drops';
@@ -39,7 +38,7 @@ export const Drops: React.FC = () => {
     [tab]
   );
 
-  const [feature, ...rest] = list;
+  const [feature] = list;
 
   return (
     <div className="mx-auto max-w-frame px-5 pb-24 pt-10 lg:px-10">
@@ -104,18 +103,6 @@ export const Drops: React.FC = () => {
           
           </div>
 
-          {rest.length > 0 &&
-        <div className="border-t bp-rule pt-8">
-              <Label as="div">
-                {tab === 'Recently Closed' ? 'Earlier releases' : 'Also in the schedule'}
-              </Label>
-              <div className="mt-4">
-                {rest.map((item) =>
-            <DropRow key={item.drop.id} drop={item.drop} collection={item.collection} />
-            )}
-              </div>
-            </div>
-        }
         </> :
 
       <div className="my-12 border bp-rule px-6 py-20 text-center">
