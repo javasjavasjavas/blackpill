@@ -12,11 +12,11 @@ import { indexLabel } from '../utils/format';
 export const ArtistsIndex: React.FC = () =>
 <div className="mx-auto max-w-frame px-5 pb-24 pt-10 lg:px-10">
     <header className="pb-10">
-      <Label>Registry — {registryArtists.length} artist</Label>
+      <Label>Featured Artists</Label>
       <h1 className="mt-5 text-title font-extrabold uppercase text-paper">Artists</h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-bone">
-        Black Pill works with a small roster. Artists are invited on the strength of a single idea
-        that could not have been made any other way.
+        Meet the featured artists whose distinctive ideas, practices and perspectives are shaping
+        the next generation of digital collectibles.
       </p>
     </header>
 
