@@ -21,9 +21,9 @@ export const SubmitProjectCTA: React.FC = () => (
       <div className="lg:col-span-6 lg:col-start-7 lg:self-end">
         <Reveal>
           <p className="max-w-xl text-lg leading-relaxed text-ink/75 md:text-xl">
-            Not another image. Not another roadmap. Share your project, your process, or the idea you
-            want to bring to life. If it moves, evolves, responds, plays, measures, or explores new
-            possibilities, we want to see it.
+            Be part of Black Pill Labs and showcase your work for free. Share your project, your
+            process, or the idea you want to bring to life. If it&apos;s something unique, we want to
+            see it.
           </p>
           <ActionButton
             to="/about#submit"
