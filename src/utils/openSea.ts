@@ -16,7 +16,8 @@ const formatDate = (value: string | null | undefined): string | null => {
   return new Intl.DateTimeFormat('en-GB', {
     day: '2-digit',
     month: 'short',
-    year: 'numeric'
+    year: 'numeric',
+    timeZone: 'UTC'
   }).format(date);
 };
 
