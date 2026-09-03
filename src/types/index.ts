@@ -106,6 +106,8 @@ export interface Collection {
   art: CollectionArt;
   /** Optional external marketplace page for the full collection. */
   marketplaceUrl?: string;
+  /** OpenSea collection slug used by the lazy-loaded token preview. */
+  openSeaSlug?: string;
   /** Editorial weight in the featured grid. */
   featured?: 'primary' | 'secondary';
 }

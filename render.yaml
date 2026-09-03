@@ -27,6 +27,8 @@ services:
     envVars:
       - key: RESEND_API_KEY
         sync: false
+      - key: OPENSEA_API_KEY
+        sync: false
       - key: SUBMISSION_TO_EMAIL
         value: javdamico@gmail.com
       - key: SUBMISSION_FROM_EMAIL

@@ -2,6 +2,7 @@ import http from 'node:http';
 
 const port = Number(process.env.PORT || 8787);
 const resendApiKey = process.env.RESEND_API_KEY;
+const openSeaApiKey = process.env.OPENSEA_API_KEY;
 const recipient = process.env.SUBMISSION_TO_EMAIL || 'javdamico@gmail.com';
 const sender = process.env.SUBMISSION_FROM_EMAIL || 'Black Pill <onboarding@resend.dev>';
 
@@ -16,6 +17,9 @@ const allowedOrigins = new Set([
 const rateLimits = new Map();
 const RATE_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT = 5;
+const openSeaCache = new Map();
+const OPENSEA_CACHE_MS = 10 * 60 * 1000;
+const supportedOpenSeaCollections = new Set(['blotters']);
 
 const json = (response, status, payload, origin = '') => {
   response.writeHead(status, {
@@ -84,15 +88,71 @@ const server = http.createServer(async (request, response) => {
     return json(response, 403, { error: 'Origin not allowed.' });
   }
 
-  if (request.method === 'OPTIONS' && url.pathname === '/api/submissions') {
+  if (request.method === 'OPTIONS' &&
+      (url.pathname === '/api/submissions' || url.pathname.startsWith('/api/opensea/collection/'))) {
     response.writeHead(204, {
       'Access-Control-Allow-Origin': origin,
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
       'Access-Control-Max-Age': '86400',
       Vary: 'Origin'
     });
     return response.end();
+  }
+
+  const openSeaMatch = url.pathname.match(/^\/api\/opensea\/collection\/([a-z0-9-]+)$/);
+  if (request.method === 'GET' && openSeaMatch) {
+    const slug = openSeaMatch[1];
+    const limit = Math.min(10, Math.max(1, Number(url.searchParams.get('limit')) || 10));
+
+    if (!supportedOpenSeaCollections.has(slug)) {
+      return json(response, 404, { error: 'Collection not configured.' }, origin);
+    }
+
+    if (!openSeaApiKey) {
+      console.error('OPENSEA_API_KEY is not configured.');
+      return json(response, 503, { error: 'Collection preview is not configured.' }, origin);
+    }
+
+    const cacheKey = `${slug}:${limit}`;
+    const cached = openSeaCache.get(cacheKey);
+    if (cached && Date.now() - cached.createdAt < OPENSEA_CACHE_MS) {
+      return json(response, 200, cached.payload, origin);
+    }
+
+    try {
+      const openSeaResponse = await fetch(
+        `https://api.opensea.io/api/v2/collection/${encodeURIComponent(slug)}/nfts?limit=${limit}`,
+        {
+          headers: { 'X-API-KEY': openSeaApiKey },
+          signal: AbortSignal.timeout(8000)
+        }
+      );
+
+      if (!openSeaResponse.ok) {
+        const details = await openSeaResponse.text();
+        console.error(`OpenSea rejected the collection request (${openSeaResponse.status}): ${details}`);
+        return json(response, 502, { error: 'Collection preview is temporarily unavailable.' }, origin);
+      }
+
+      const data = await openSeaResponse.json();
+      const nfts = Array.isArray(data.nfts) ? data.nfts.slice(0, limit) : [];
+      const payload = {
+        tokens: nfts.map((nft) => ({
+          id: String(nft.identifier || ''),
+          name: String(nft.name || `Blotters #${nft.identifier || ''}`),
+          image: nft.display_image_url || nft.image_url || null,
+          animation: nft.display_animation_url || null,
+          openseaUrl: nft.opensea_url || null
+        }))
+      };
+
+      openSeaCache.set(cacheKey, { createdAt: Date.now(), payload });
+      return json(response, 200, payload, origin);
+    } catch (error) {
+      console.error('OpenSea collection request failed:', error instanceof Error ? error.message : error);
+      return json(response, 502, { error: 'Collection preview is temporarily unavailable.' }, origin);
+    }
   }
 
   if (request.method !== 'POST' || url.pathname !== '/api/submissions') {

@@ -5,6 +5,7 @@ import { TechnicalSpec } from '../components/collection/TechnicalSpec';
 import { CollectionStory } from '../components/collection/CollectionStory';
 import { TokenBrowser } from '../components/collection/TokenBrowser';
 import { ArtistModule } from '../components/collection/ArtistModule';
+import { ExploreCollection } from '../components/collection/ExploreCollection';
 import { NotFound } from './NotFound';
 import { getCollection } from '../data/collections';
 import { getArtist } from '../data/artists';
@@ -32,6 +33,7 @@ export const CollectionDetail: React.FC = () => {
       <TechnicalSpec collection={collection} />
       <CollectionStory collection={collection} artist={artist} />
       {scheduledDrop && <TokenBrowser collection={collection} />}
+      {collection.openSeaSlug && <ExploreCollection collection={collection} />}
       <ArtistModule artist={artist} currentSlug={collection.slug} />
     </>);
 

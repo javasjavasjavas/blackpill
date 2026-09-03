@@ -559,6 +559,7 @@ export const collections: Collection[] = [
   },
   traits: [],
   marketplaceUrl: 'https://opensea.io/collection/blotters',
+  openSeaSlug: 'blotters',
   art: {
     variant: 'signal',
     accent: '#B7FF00',
