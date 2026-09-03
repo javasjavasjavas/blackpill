@@ -61,6 +61,7 @@ export const FeaturedDrop: React.FC<FeaturedDropProps> = ({
               className="absolute inset-0"
               interactive={autoLoadHtmlPreview}
               autoLoad={autoLoadHtmlPreview}
+              edgeToEdge
             /> :
             <ArtCanvas
               variant={collection.art.variant}

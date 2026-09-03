@@ -92,6 +92,7 @@ export const Drops: React.FC = () => {
             key={feature.drop.id}
             drop={feature.drop}
             collection={feature.collection}
+            autoLoadHtmlPreview
             reminded={reminders.includes(feature.drop.id)}
             onRemind={() =>
             setReminders((r) =>

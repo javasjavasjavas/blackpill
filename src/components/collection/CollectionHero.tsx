@@ -123,6 +123,7 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
               className="absolute inset-0"
               interactive
               autoLoad
+              edgeToEdge
             /> : imagePreviewUrl ?
             <img
               src={imagePreviewUrl}

@@ -7,6 +7,7 @@ interface DistrictsPreviewProps {
   className?: string;
   interactive?: boolean;
   autoLoad?: boolean;
+  edgeToEdge?: boolean;
 }
 
 const posterUrl = `${import.meta.env.BASE_URL}images/districts-preview.jpg`;
@@ -18,7 +19,8 @@ export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
   title,
   className,
   interactive = false,
-  autoLoad = false
+  autoLoad = false,
+  edgeToEdge = false
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [requested, setRequested] = useState(false);
@@ -83,7 +85,12 @@ export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
       <iframe
         src={livePreviewUrl}
         title={`Interactive preview of ${title}`}
-        className="absolute inset-0 z-10 h-full w-full border-0 bg-[#06070a]"
+        className={cn(
+          'absolute z-10 border-0 bg-[#06070a]',
+          edgeToEdge ?
+          '-left-3 -top-3 h-[calc(100%+24px)] w-[calc(100%+24px)] sm:-left-6 sm:-top-6 sm:h-[calc(100%+48px)] sm:w-[calc(100%+48px)]' :
+          'inset-0 h-full w-full'
+        )}
         sandbox="allow-scripts"
         loading="lazy"
         referrerPolicy="no-referrer"
