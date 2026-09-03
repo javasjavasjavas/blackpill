@@ -110,7 +110,7 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
 
       <div className="grid gap-8 py-10 lg:grid-cols-12 lg:gap-x-10">
         {/* Artwork */}
-        <div className="lg:col-span-7 xl:col-span-8">
+        <div className={editorialCollection ? 'lg:col-span-5' : 'lg:col-span-7 xl:col-span-8'}>
           <div className={cn('relative w-full overflow-hidden border bp-rule', htmlPreviewUrl || imagePreviewUrl ? 'aspect-square' : 'aspect-[4/3]')}>
             {htmlPreviewUrl ?
             <DistrictsPreview
@@ -154,7 +154,7 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
         </div>
 
         {/* Title + mint */}
-        <div className="lg:col-span-5 xl:col-span-4">
+        <div className={editorialCollection ? 'lg:col-span-7' : 'lg:col-span-5 xl:col-span-4'}>
           <h1
             id="collection-title"
             className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-extrabold uppercase leading-[0.88] tracking-tightest text-paper">
@@ -185,14 +185,13 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
             <div className="p-5">
                 <Label>Published collection</Label>
                 {collection.marketplaceUrl &&
-                <ActionButton href={collection.marketplaceUrl} className="mt-4">
-                    View on OpenSea
-                    <ExternalLinkIcon className="h-4 w-4" strokeWidth={1.5} />
-                  </ActionButton>
+                <div className="mt-4">
+                    <ActionButton href={collection.marketplaceUrl}>
+                      View on OpenSea
+                      <ExternalLinkIcon className="h-4 w-4" strokeWidth={1.5} />
+                    </ActionButton>
+                  </div>
                 }
-                <p className="mt-3 max-w-sm text-[13px] leading-relaxed text-smoke">
-                  Release, edition and ownership details will be added when they are available.
-                </p>
               </div> :
             upcoming ?
             <div className="p-5">
