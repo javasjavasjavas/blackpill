@@ -19,8 +19,7 @@ export const CollectionStory: React.FC<CollectionStoryProps> = ({ collection, ar
   { index: '01', title: 'The idea', body: collection.story.idea },
   { index: '02', title: 'How it works', body: collection.story.howItWorks },
   { index: '03', title: 'What makes it new', body: collection.story.innovation },
-  { index: '04', title: 'Ownership', body: collection.story.ownership },
-  { index: '05', title: 'Technical process', body: collection.story.process }];
+  { index: '04', title: 'Technical process', body: collection.story.process }];
 
 
   return (
