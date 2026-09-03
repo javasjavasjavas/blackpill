@@ -66,8 +66,12 @@ export const ArtistProfile: React.FC = () => {
               </Label>
               <div className="mt-5 flex items-start gap-4">
                 <h1
-                  className={`${artist.name.length > 13 ? 'text-[clamp(3rem,6vw,6.5rem)] tracking-[-0.04em]' : 'text-mega'} font-extrabold uppercase leading-[0.92] text-paper`}>
-                  {artist.name}
+                  className={`${artist.profileNameLines ? 'text-[clamp(4rem,8vw,8.5rem)] tracking-[-0.05em]' : artist.name.length > 13 ? 'text-[clamp(3rem,6vw,6.5rem)] tracking-[-0.04em] uppercase' : 'text-mega uppercase'} font-extrabold leading-[0.82] text-paper`}>
+                  {artist.profileNameLines ?
+                  artist.profileNameLines.map((line) =>
+                  <span key={line} className="block">{line}</span>
+                  ) :
+                  artist.name}
                 </h1>
                 {artist.verified &&
                 <CheckCircle2Icon

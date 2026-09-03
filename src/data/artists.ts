@@ -27,10 +27,11 @@ export const artists: Artist[] = [
 {
   slug: 'arbo',
   name: 'ARBOVONDERWALD',
-  location: 'Location undisclosed',
+  profileNameLines: ['Arbo', 'VONDERWALD'],
+  location: 'United States',
   verified: false,
   disciplines: ['Generative', 'Narrative', 'On-Chain'],
-  focus: 'Generative · Narrative · On-Chain',
+  focus: 'Experimental Digital Artist',
   bio: 'Arbo Vonderwald was raised on a working tree farm in Rhode Island, on land his family has cut selectively for generations.',
   longBio: [
   'Arbo Vonderwald was raised on a working tree farm in Rhode Island, on land his family has cut selectively for generations. He learned to read a forest before he learned to read a book. He studied film and media art at Pratt in the 1990s, then spent the next two decades building systems. Special effects rigs that pushed signal back and forth between digital and analog. Software for companies that make physical things. Companies, eventually, when the software wasn\'t enough.',

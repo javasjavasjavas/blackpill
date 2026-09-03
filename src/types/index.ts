@@ -116,6 +116,7 @@ export interface ArtistLinks {
 export interface Artist {
   slug: string;
   name: string;
+  profileNameLines?: string[];
   location: string;
   verified: boolean;
   disciplines: string[];
