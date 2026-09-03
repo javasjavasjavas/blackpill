@@ -18,6 +18,7 @@ import { StatusBadge } from '../ui/StatusBadge';
 import { Tag } from '../ui/Tag';
 import { useWallet } from '../../contexts/WalletContext';
 import { dropForCollection } from '../../data/drops';
+import type { OpenSeaCollectionDetails } from '../../hooks/useOpenSeaCollection';
 import type { Artist, Collection } from '../../types';
 import { cn, formatDateTime, formatNumber, formatPrice, truncateAddress } from '../../utils/format';
 import {
@@ -25,15 +26,17 @@ import {
   FEATURE_SPLIT_GRID,
   FEATURE_SPLIT_MEDIA
 } from '../../utils/layout';
+import { resolveOpenSeaSpec } from '../../utils/openSea';
 
 interface CollectionHeroProps {
   collection: Collection;
   artist: Artist;
+  openSeaDetails?: OpenSeaCollectionDetails | null;
 }
 
 type MintState = 'idle' | 'minting' | 'success' | 'error';
 
-export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, artist }) => {
+export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, artist, openSeaDetails }) => {
   const { status: walletStatus, openModal } = useWallet();
   const [mintState, setMintState] = useState<MintState>('idle');
   const [quantity, setQuantity] = useState(1);
@@ -45,6 +48,7 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
   const imagePreviewUrl = collection.art.imagePreview ?? null;
   const scheduledDrop = dropForCollection(collection.slug);
   const editorialCollection = !scheduledDrop;
+  const resolvedSpec = resolveOpenSeaSpec(openSeaDetails, collection.spec);
 
   const upcoming = !!scheduledDrop &&
     (scheduledDrop.phase === 'Upcoming' || scheduledDrop.phase === 'Allowlist');
@@ -99,9 +103,9 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
             }
             {shared ? 'Link copied' : 'Share'}
           </button>
-          {collection.spec.contract !== 'TBA' &&
+          {resolvedSpec.contract !== 'TBA' &&
           <a
-            href="https://etherscan.io"
+            href={`https://etherscan.io/address/${resolvedSpec.contract}`}
             target="_blank"
             rel="noreferrer noopener"
             className="inline-flex items-center gap-2 border border-white/20 px-3 py-1.5 font-mono text-10 uppercase tracking-meta text-bone transition-colors duration-150 hover:border-paper hover:text-paper">
@@ -186,9 +190,9 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
           </div>
 
           {/* Mint panel */}
-          <div className="mt-8 border bp-rule">
+          <div className={cn('mt-8', !editorialCollection && 'border bp-rule')}>
             {editorialCollection ?
-            <div className="p-5">
+            <div>
                 <Label>Published collection</Label>
                 {collection.marketplaceUrl &&
                 <div className="mt-4">
@@ -334,13 +338,13 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
             )}>
             
             {[
-            { k: 'Supply', v: editorialCollection || collection.slug === 'districts' ? 'TBA' : collection.supply ? formatNumber(collection.supply) : 'Open edition' },
-            { k: 'Storage', v: collection.spec.storage },
+            { k: 'Supply', v: editorialCollection ? openSeaDetails?.totalSupply != null ? formatNumber(openSeaDetails.totalSupply) : 'TBA' : collection.slug === 'districts' ? 'TBA' : collection.supply ? formatNumber(collection.supply) : 'Open edition' },
+            { k: 'Storage', v: resolvedSpec.storage },
             editorialCollection || collection.slug === 'districts' ?
-            { k: 'Chain', v: collection.spec.chain } :
-            { k: 'Standard', v: collection.spec.tokenStandard },
+            { k: 'Chain', v: resolvedSpec.chain } :
+            { k: 'Standard', v: resolvedSpec.tokenStandard },
             editorialCollection ?
-            { k: 'Released', v: collection.spec.releaseDate } :
+            { k: 'Released', v: resolvedSpec.releaseDate } :
             collection.slug === 'districts' ?
             { k: 'Price', v: 'TBA' } :
             { k: 'Released', v: collection.spec.releaseDate }].

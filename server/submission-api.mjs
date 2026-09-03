@@ -19,7 +19,55 @@ const RATE_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT = 5;
 const openSeaCache = new Map();
 const OPENSEA_CACHE_MS = 10 * 60 * 1000;
-const supportedOpenSeaCollections = new Set(['blotters']);
+
+const classifyStorage = (metadataUrl) => {
+  const value = String(metadataUrl || '').toLowerCase();
+  if (!value) return null;
+  if (value.startsWith('data:')) return 'Fully On-Chain';
+  if (value.startsWith('ipfs:') || value.includes('/ipfs/')) return 'IPFS';
+  if (value.startsWith('ar:') || value.includes('arweave.net')) return 'Arweave';
+  if (value.startsWith('http://') || value.startsWith('https://')) return 'Off-chain';
+  return null;
+};
+
+const classifyArtwork = (nft) => {
+  const mediaUrl = nft.display_animation_url || nft.animation_url ||
+    nft.display_image_url || nft.image_url || '';
+  let extension = '';
+
+  try {
+    extension = new URL(mediaUrl).pathname.split('.').pop()?.toLowerCase() || '';
+  } catch {
+    extension = String(mediaUrl).split('?')[0].split('.').pop()?.toLowerCase() || '';
+  }
+
+  const formats = {
+    gif: 'GIF',
+    png: 'PNG',
+    jpg: 'JPG',
+    jpeg: 'JPG',
+    svg: 'SVG',
+    mp4: 'MP4',
+    webm: 'WEBM',
+    html: 'HTML'
+  };
+  const artworkFormat = formats[extension] || null;
+  const renderingMethod = extension === 'gif' ? 'Animated image' :
+    ['mp4', 'webm'].includes(extension) ? 'Video' :
+    extension === 'svg' ? 'Vector image' :
+    extension === 'html' ? 'Interactive HTML' :
+    artworkFormat ? 'Static image' : null;
+
+  return { artworkFormat, renderingMethod };
+};
+
+const normalizeStandard = (value) => {
+  const standard = String(value || '').toUpperCase();
+  if (!standard) return null;
+  if (standard === 'ERC721') return 'ERC-721';
+  if (standard === 'ERC1155') return 'ERC-1155';
+  return standard;
+};
 
 const json = (response, status, payload, origin = '') => {
   response.writeHead(status, {
@@ -105,10 +153,6 @@ const server = http.createServer(async (request, response) => {
     const slug = openSeaMatch[1];
     const limit = Math.min(10, Math.max(1, Number(url.searchParams.get('limit')) || 10));
 
-    if (!supportedOpenSeaCollections.has(slug)) {
-      return json(response, 404, { error: 'Collection not configured.' }, origin);
-    }
-
     if (!openSeaApiKey) {
       console.error('OPENSEA_API_KEY is not configured.');
       return json(response, 503, { error: 'Collection preview is not configured.' }, origin);
@@ -121,13 +165,17 @@ const server = http.createServer(async (request, response) => {
     }
 
     try {
-      const openSeaResponse = await fetch(
-        `https://api.opensea.io/api/v2/collection/${encodeURIComponent(slug)}/nfts?limit=${limit}`,
-        {
-          headers: { 'X-API-KEY': openSeaApiKey },
-          signal: AbortSignal.timeout(8000)
-        }
-      );
+      const headers = { 'X-API-KEY': openSeaApiKey };
+      const [openSeaResponse, collectionResponse] = await Promise.all([
+        fetch(
+          `https://api.opensea.io/api/v2/collection/${encodeURIComponent(slug)}/nfts?limit=${limit}`,
+          { headers, signal: AbortSignal.timeout(8000) }
+        ),
+        fetch(
+          `https://api.opensea.io/api/v2/collections/${encodeURIComponent(slug)}`,
+          { headers, signal: AbortSignal.timeout(8000) }
+        )
+      ]);
 
       if (!openSeaResponse.ok) {
         const details = await openSeaResponse.text();
@@ -136,8 +184,42 @@ const server = http.createServer(async (request, response) => {
       }
 
       const data = await openSeaResponse.json();
+      const collectionData = collectionResponse.ok ? await collectionResponse.json() : {};
       const nfts = Array.isArray(data.nfts) ? data.nfts.slice(0, limit) : [];
+      const firstNft = nfts[0] || {};
+      const primaryContract = Array.isArray(collectionData.contracts) ? collectionData.contracts[0] || {} : {};
+      const chain = primaryContract.chain || firstNft.chain || null;
+      const contractAddress = primaryContract.address || firstNft.contract || null;
+      let contractData = {};
+
+      if (chain && contractAddress) {
+        try {
+          const contractResponse = await fetch(
+            `https://api.opensea.io/api/v2/chain/${encodeURIComponent(chain)}/contract/${encodeURIComponent(contractAddress)}`,
+            { headers, signal: AbortSignal.timeout(8000) }
+          );
+          if (contractResponse.ok) contractData = await contractResponse.json();
+        } catch (error) {
+          console.error('OpenSea contract metadata request failed:', error instanceof Error ? error.message : error);
+        }
+      }
+
+      const { artworkFormat, renderingMethod } = classifyArtwork(firstNft);
+      const totalSupplyValue = collectionData.total_supply ?? contractData.total_supply;
+      const totalSupply = Number.isFinite(Number(totalSupplyValue)) ? Number(totalSupplyValue) : null;
       const payload = {
+        collection: {
+          slug,
+          totalSupply,
+          chain,
+          contractAddress,
+          tokenStandard: normalizeStandard(contractData.contract_standard || primaryContract.contract_standard),
+          storageMethod: classifyStorage(firstNft.metadata_url),
+          artworkFormat,
+          renderingMethod,
+          releaseDate: contractData.deployed_date || collectionData.created_date || null,
+          openseaUrl: collectionData.opensea_url || null
+        },
         tokens: nfts.map((nft) => ({
           id: String(nft.identifier || ''),
           name: String(nft.name || `Blotters #${nft.identifier || ''}`),

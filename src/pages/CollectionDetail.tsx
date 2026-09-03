@@ -10,11 +10,13 @@ import { NotFound } from './NotFound';
 import { getCollection } from '../data/collections';
 import { getArtist } from '../data/artists';
 import { dropForCollection } from '../data/drops';
+import { useOpenSeaCollection } from '../hooks/useOpenSeaCollection';
 
 export const CollectionDetail: React.FC = () => {
   const { slug } = useParams<{slug: string;}>();
   const collection = slug ? getCollection(slug) : undefined;
   const artist = collection ? getArtist(collection.artistSlug) : undefined;
+  const openSea = useOpenSeaCollection(collection?.openSeaSlug);
 
   if (!collection || !artist) {
     return (
@@ -29,11 +31,16 @@ export const CollectionDetail: React.FC = () => {
 
   return (
     <>
-      <CollectionHero collection={collection} artist={artist} />
-      <TechnicalSpec collection={collection} />
+      <CollectionHero collection={collection} artist={artist} openSeaDetails={openSea.data?.collection} />
+      <TechnicalSpec collection={collection} openSeaDetails={openSea.data?.collection} />
       <CollectionStory collection={collection} artist={artist} />
       {scheduledDrop && <TokenBrowser collection={collection} />}
-      {collection.openSeaSlug && <ExploreCollection collection={collection} />}
+      {collection.openSeaSlug &&
+      <ExploreCollection
+        collection={collection}
+        tokens={openSea.data?.tokens || []}
+        loading={openSea.loading}
+        failed={openSea.failed} />}
       <ArtistModule artist={artist} currentSlug={collection.slug} />
     </>);
 

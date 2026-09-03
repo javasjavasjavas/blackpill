@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { CopyIcon, CheckIcon } from 'lucide-react';
 import { Tooltip } from '../ui/Tooltip';
 import { SectionHeading } from '../ui/SectionHeading';
+import type { OpenSeaCollectionDetails } from '../../hooks/useOpenSeaCollection';
 import type { Collection } from '../../types';
+import { resolveOpenSeaSpec } from '../../utils/openSea';
 
 interface TechnicalSpecProps {
   collection: Collection;
+  openSeaDetails?: OpenSeaCollectionDetails | null;
 }
 
 const DEFINITIONS: Record<string, string> = {
@@ -25,13 +28,13 @@ const DEFINITIONS: Record<string, string> = {
   'The contract retains a limited admin function, disclosed here, that can change part of the work.'
 };
 
-const classify = (collection: Collection): string[] => {
+const classify = (collection: Collection, storage: string): string[] => {
   const labels: string[] = [];
-  if (collection.spec.storage !== 'TBA') {
+  if (storage !== 'TBA') {
     labels.push(
-      collection.spec.storage === 'Fully On-Chain' ?
+      storage === 'Fully On-Chain' ?
       'Fully On-Chain' :
-      collection.spec.storage === 'Off-chain' ?
+      storage === 'Off-chain' ?
       'Off-chain' :
       'Partially On-Chain'
     );
@@ -47,21 +50,22 @@ const classify = (collection: Collection): string[] => {
   return labels;
 };
 
-export const TechnicalSpec: React.FC<TechnicalSpecProps> = ({ collection }) => {
+export const TechnicalSpec: React.FC<TechnicalSpecProps> = ({ collection, openSeaDetails }) => {
   const [copied, setCopied] = useState(false);
+  const resolvedSpec = resolveOpenSeaSpec(openSeaDetails, collection.spec);
 
   const rows: {k: string;v: string;term?: string;}[] = [
-  { k: 'Blockchain', v: collection.spec.chain },
-  { k: 'Contract address', v: collection.spec.contract },
-  { k: 'Storage method', v: collection.spec.storage, term: collection.spec.storage },
-  { k: 'Artwork format', v: collection.spec.format },
-  { k: 'Rendering method', v: collection.spec.rendering },
-  { k: 'Dynamic behaviour', v: collection.spec.dynamicBehavior, term: 'Dynamic' }];
+  { k: 'Blockchain', v: resolvedSpec.chain },
+  { k: 'Contract address', v: resolvedSpec.contract },
+  { k: 'Storage method', v: resolvedSpec.storage, term: resolvedSpec.storage },
+  { k: 'Artwork format', v: resolvedSpec.format },
+  { k: 'Rendering method', v: resolvedSpec.rendering },
+  { k: 'Dynamic behaviour', v: resolvedSpec.dynamicBehavior, term: 'Dynamic' }];
 
 
   const copyContract = async () => {
     try {
-      await navigator.clipboard.writeText(collection.spec.contract);
+      await navigator.clipboard.writeText(resolvedSpec.contract);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1600);
     } catch {
@@ -82,7 +86,7 @@ export const TechnicalSpec: React.FC<TechnicalSpecProps> = ({ collection }) => {
       
 
       <div className="mt-8 flex flex-wrap gap-2">
-        {classify(collection).map((label) =>
+        {classify(collection, resolvedSpec.storage).map((label) =>
         <Tooltip key={label} content={DEFINITIONS[label] ?? ''}>
             <span className="rounded-full border border-white/25 px-3.5 py-2 font-mono text-[8px] uppercase tracking-[0.18em] text-paper">
               {label}
