@@ -184,9 +184,12 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
             {editorialCollection ?
             <div className="p-5">
                 <Label>Published collection</Label>
-                <p className="mt-3 text-2xl font-bold uppercase tracking-tight text-paper">
-                  Available to explore
-                </p>
+                {collection.marketplaceUrl &&
+                <ActionButton href={collection.marketplaceUrl} className="mt-4">
+                    View on OpenSea
+                    <ExternalLinkIcon className="h-4 w-4" strokeWidth={1.5} />
+                  </ActionButton>
+                }
                 <p className="mt-3 max-w-sm text-[13px] leading-relaxed text-smoke">
                   Release, edition and ownership details will be added when they are available.
                 </p>

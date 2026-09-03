@@ -53,14 +53,10 @@ export const TechnicalSpec: React.FC<TechnicalSpecProps> = ({ collection }) => {
   const rows: {k: string;v: string;term?: string;}[] = [
   { k: 'Blockchain', v: collection.spec.chain },
   { k: 'Contract address', v: collection.spec.contract },
-  { k: 'Token standard', v: collection.spec.tokenStandard },
   { k: 'Storage method', v: collection.spec.storage, term: collection.spec.storage },
-  { k: 'Metadata location', v: collection.spec.metadataLocation },
   { k: 'Artwork format', v: collection.spec.format },
   { k: 'Rendering method', v: collection.spec.rendering },
-  { k: 'Dynamic behaviour', v: collection.spec.dynamicBehavior, term: 'Dynamic' },
-  { k: 'Royalty', v: collection.spec.royalty },
-  { k: 'Release date', v: collection.spec.releaseDate }];
+  { k: 'Dynamic behaviour', v: collection.spec.dynamicBehavior, term: 'Dynamic' }];
 
 
   const copyContract = async () => {

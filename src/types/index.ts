@@ -104,6 +104,8 @@ export interface Collection {
   story: CollectionStory;
   traits: TraitDefinition[];
   art: CollectionArt;
+  /** Optional external marketplace page for the full collection. */
+  marketplaceUrl?: string;
   /** Editorial weight in the featured grid. */
   featured?: 'primary' | 'secondary';
 }

@@ -5,7 +5,6 @@ import { TechnicalSpec } from '../components/collection/TechnicalSpec';
 import { CollectionStory } from '../components/collection/CollectionStory';
 import { TokenBrowser } from '../components/collection/TokenBrowser';
 import { ArtistModule } from '../components/collection/ArtistModule';
-import { RelatedExperiments } from '../components/collection/RelatedExperiments';
 import { NotFound } from './NotFound';
 import { getCollection } from '../data/collections';
 import { getArtist } from '../data/artists';
@@ -34,7 +33,6 @@ export const CollectionDetail: React.FC = () => {
       <CollectionStory collection={collection} artist={artist} />
       {scheduledDrop && <TokenBrowser collection={collection} />}
       <ArtistModule artist={artist} currentSlug={collection.slug} />
-      {collection.slug !== 'districts' && <RelatedExperiments collection={collection} />}
     </>);
 
 };

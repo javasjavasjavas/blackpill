@@ -558,6 +558,7 @@ export const collections: Collection[] = [
     artistStatement: 'Artist statement coming soon.'
   },
   traits: [],
+  marketplaceUrl: 'https://opensea.io/collection/blotters',
   art: {
     variant: 'signal',
     accent: '#B7FF00',
