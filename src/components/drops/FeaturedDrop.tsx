@@ -10,6 +10,11 @@ import { Tag } from '../ui/Tag';
 import { getArtist } from '../../data/artists';
 import type { Collection, Drop } from '../../types';
 import { cn, formatNumber, formatPrice } from '../../utils/format';
+import {
+  FEATURE_SPLIT_CONTENT,
+  FEATURE_SPLIT_GRID,
+  FEATURE_SPLIT_MEDIA
+} from '../../utils/layout';
 
 interface FeaturedDropProps {
   drop: Drop;
@@ -39,8 +44,8 @@ export const FeaturedDrop: React.FC<FeaturedDropProps> = ({
   ];
 
   return (
-    <article className="grid gap-8 lg:grid-cols-12 lg:gap-10">
-      <div className="lg:col-span-7">
+    <article className={FEATURE_SPLIT_GRID}>
+      <div className={FEATURE_SPLIT_MEDIA}>
         <Link
           to={`/collection/${collection.slug}`}
           className="group block">
@@ -75,7 +80,7 @@ export const FeaturedDrop: React.FC<FeaturedDropProps> = ({
         </Link>
       </div>
 
-      <div className="flex flex-col lg:col-span-5">
+      <div className={`flex flex-col ${FEATURE_SPLIT_CONTENT}`}>
         {!upcoming && <Label>Now minting</Label>}
         <h3
           className={cn(

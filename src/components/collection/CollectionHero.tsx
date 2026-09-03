@@ -20,6 +20,11 @@ import { useWallet } from '../../contexts/WalletContext';
 import { dropForCollection } from '../../data/drops';
 import type { Artist, Collection } from '../../types';
 import { cn, formatDateTime, formatNumber, formatPrice, truncateAddress } from '../../utils/format';
+import {
+  FEATURE_SPLIT_CONTENT,
+  FEATURE_SPLIT_GRID,
+  FEATURE_SPLIT_MEDIA
+} from '../../utils/layout';
 
 interface CollectionHeroProps {
   collection: Collection;
@@ -108,9 +113,9 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
         </div>
       </div>
 
-      <div className="grid gap-8 py-10 lg:grid-cols-12 lg:gap-x-10">
+      <div className={`${FEATURE_SPLIT_GRID} py-10`}>
         {/* Artwork */}
-        <div className={editorialCollection ? 'lg:col-span-5' : 'lg:col-span-7 xl:col-span-8'}>
+        <div className={FEATURE_SPLIT_MEDIA}>
           <div className={cn('relative w-full overflow-hidden border bp-rule', htmlPreviewUrl || imagePreviewUrl ? 'aspect-square' : 'aspect-[4/3]')}>
             {htmlPreviewUrl ?
             <DistrictsPreview
@@ -154,7 +159,7 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
         </div>
 
         {/* Title + mint */}
-        <div className={editorialCollection ? 'lg:col-span-7' : 'lg:col-span-5 xl:col-span-4'}>
+        <div className={FEATURE_SPLIT_CONTENT}>
           <h1
             id="collection-title"
             className="text-[clamp(2.25rem,4.5vw,3.75rem)] font-extrabold uppercase leading-[0.88] tracking-tightest text-paper">
