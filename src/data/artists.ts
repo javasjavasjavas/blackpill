@@ -4,6 +4,7 @@ export const artists: Artist[] = [
 {
   slug: 'javier-damico',
   name: "Javier D'Amico",
+  profileNameLines: ['JAVIER', "D'AMICO"],
   location: 'Buenos Aires, Argentina',
   verified: false,
   disciplines: ['Digital Artist', 'UX/UI Designer', 'Front-End Developer'],
@@ -27,7 +28,7 @@ export const artists: Artist[] = [
 {
   slug: 'arbo',
   name: 'ARBOVONDERWALD',
-  profileNameLines: ['Arbo', 'VONDERWALD'],
+  profileNameLines: ['ARBO', 'VONDERWALD'],
   location: 'United States',
   verified: false,
   disciplines: ['Generative', 'Narrative', 'On-Chain'],
