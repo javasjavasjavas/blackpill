@@ -4,20 +4,22 @@ import { ArtCanvas } from '../art/ArtCanvas';
 import { Tag } from '../ui/Tag';
 import { StatusBadge } from '../ui/StatusBadge';
 import { getArtist } from '../../data/artists';
+import { dropForCollection } from '../../data/drops';
 import type { Collection } from '../../types';
 import { cn, formatNumber, formatPrice } from '../../utils/format';
 
 interface CollectionCardProps {
   collection: Collection;
   /** Editorial weight — drives preview proportion and type scale. */
-  scale?: 'feature' | 'standard' | 'compact';
+  scale?: 'feature' | 'standard' | 'compact' | 'profile';
   className?: string;
 }
 
 const RATIO: Record<NonNullable<CollectionCardProps['scale']>, string> = {
   feature: 'aspect-[16/11]',
   standard: 'aspect-[4/5]',
-  compact: 'aspect-[16/10]'
+  compact: 'aspect-[16/10]',
+  profile: 'aspect-square'
 };
 
 export const CollectionCard: React.FC<CollectionCardProps> = ({
@@ -26,7 +28,11 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
   className
 }) => {
   const artist = getArtist(collection.artistSlug);
+  const scheduledDrop = dropForCollection(collection.slug);
+  const editorialCollection = scale === 'profile' || !scheduledDrop;
   const priceLabel =
+  editorialCollection ?
+  'View collection' :
   collection.status === 'Sold Out' || collection.status === 'Closed' ?
   collection.floor ?
   `Floor ${formatPrice(collection.floor, collection.currency)}` :
@@ -40,19 +46,29 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
         className="flex h-full flex-col focus-visible:outline-offset-4">
         
         <div className={cn('relative w-full overflow-hidden border bp-rule', RATIO[scale])}>
+          {collection.art.imagePreview ?
+          <img
+            src={collection.art.imagePreview}
+            alt={`Preview of ${collection.title}`}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full bg-ink object-cover transition-transform duration-300 ease-expo group-hover:scale-[1.02]" /> :
           <ArtCanvas
             variant={collection.art.variant}
             accent={collection.art.accent}
             seed={collection.index * 53 + 7}
             size={scale === 'feature' ? 'hero' : 'card'}
             className="absolute inset-0 h-full w-full transition-transform duration-300 ease-expo group-hover:scale-[1.02]" />
+          }
           
           <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-3">
             <span className="bg-ink/80 px-1.5 py-0.5 font-mono text-10 uppercase tracking-meta tabular-nums text-bone">
               {collection.id}
             </span>
             <span className="bg-ink/80 px-1.5 py-0.5">
-              <StatusBadge status={collection.status} />
+              {editorialCollection ?
+              <span className="font-mono text-10 uppercase tracking-meta text-bone">Collection</span> :
+              <StatusBadge status={collection.status} />}
             </span>
           </div>
           <span
@@ -102,8 +118,12 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({
 
           <div className="mt-auto flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t bp-rule pt-4">
             <span className="font-mono text-10 uppercase tracking-meta text-smoke">
-              {collection.spec.chain} · {collection.supply ? formatNumber(collection.supply) : 'Open'}{' '}
-              {collection.supply ? 'editions' : 'edition'}
+              {editorialCollection ?
+              'Published work' :
+              <>
+                  {collection.spec.chain} · {collection.supply ? formatNumber(collection.supply) : 'Open'}{' '}
+                  {collection.supply ? 'editions' : 'edition'}
+                </>}
             </span>
             <span className="font-mono text-10 uppercase tracking-meta text-paper">{priceLabel}</span>
           </div>

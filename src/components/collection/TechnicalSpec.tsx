@@ -27,19 +27,23 @@ const DEFINITIONS: Record<string, string> = {
 
 const classify = (collection: Collection): string[] => {
   const labels: string[] = [];
-  labels.push(
-    collection.spec.storage === 'Fully On-Chain' ?
-    'Fully On-Chain' :
-    collection.spec.storage === 'Off-chain' ?
-    'Off-chain' :
-    'Partially On-Chain'
-  );
+  if (collection.spec.storage !== 'TBA') {
+    labels.push(
+      collection.spec.storage === 'Fully On-Chain' ?
+      'Fully On-Chain' :
+      collection.spec.storage === 'Off-chain' ?
+      'Off-chain' :
+      'Partially On-Chain'
+    );
+  }
   if (collection.tech.includes('Dynamic')) labels.push('Dynamic');
   if (collection.tech.includes('Interactive HTML') || collection.tech.includes('Game'))
   labels.push('Interactive');
-  labels.push(
-    collection.spec.dynamicBehavior.toLowerCase().includes('oracle') ? 'Mutable' : 'Immutable'
-  );
+  if (collection.spec.dynamicBehavior !== 'TBA') {
+    labels.push(
+      collection.spec.dynamicBehavior.toLowerCase().includes('oracle') ? 'Mutable' : 'Immutable'
+    );
+  }
   return labels;
 };
 
@@ -109,7 +113,7 @@ export const TechnicalSpec: React.FC<TechnicalSpecProps> = ({ collection }) => {
             }
             </dt>
             <dd className="max-w-[60%] break-words text-right font-mono text-[13px] text-paper">
-              {row.k === 'Contract address' ?
+              {row.k === 'Contract address' && row.v !== 'TBA' ?
             <button
               type="button"
               onClick={copyContract}

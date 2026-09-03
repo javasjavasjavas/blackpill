@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { CheckCircle2Icon, Globe2Icon } from 'lucide-react';
 import { Portrait } from '../components/art/Portrait';
 import { FeaturedDrop } from '../components/drops/FeaturedDrop';
+import { CollectionCard } from '../components/collections/CollectionCard';
 import { SocialIcon } from '../components/ui/SocialIcon';
 import { Label } from '../components/ui/Label';
 import { SectionHeading } from '../components/ui/SectionHeading';
@@ -26,6 +27,17 @@ export const ArtistProfile: React.FC = () => {
   }
 
   const works = collectionsByArtist(artist.slug);
+  const upcomingDrops = works.flatMap((collection) => {
+    const drop = dropForCollection(collection.slug);
+    return drop && (drop.phase === 'Upcoming' || drop.phase === 'Allowlist') ?
+      [{ collection, drop }] :
+      [];
+  });
+  const publishedCollections = works.filter((collection) =>
+    !upcomingDrops.some(({ collection: upcomingCollection }) =>
+      upcomingCollection.slug === collection.slug
+    )
+  );
   const websiteUrl = artist.links.website ?
     artist.links.website.startsWith('http') ? artist.links.website : `https://${artist.links.website}` :
     null;
@@ -140,28 +152,48 @@ export const ArtistProfile: React.FC = () => {
         </div>
       </section>
 
-      {/* Published collections */}
+      {/* Upcoming drops */}
+      {upcomingDrops.length > 0 &&
       <section
         aria-labelledby="works-title"
         className="mx-auto max-w-frame px-5 py-8 lg:px-10 lg:py-12">
         
         <SectionHeading
           id="works-title"
-          index="Published"
-          title="Collections"
-          description={`${works.length} ${works.length === 1 ? 'release' : 'releases'} on Black Pill.`} />
+          index="Upcoming"
+          title="Drops"
+          description={`${upcomingDrops.length} ${upcomingDrops.length === 1 ? 'scheduled release' : 'scheduled releases'} on Black Pill.`} />
         
         <div className="mt-10 space-y-16">
-          {works.map((collection, i) => {
-            const drop = dropForCollection(collection.slug);
-            return drop ?
-            <Reveal key={collection.slug} delay={i * 0.04}>
+          {upcomingDrops.map(({ collection, drop }, i) =>
+          <Reveal key={collection.slug} delay={i * 0.04}>
                 <FeaturedDrop drop={drop} collection={collection} />
-              </Reveal> :
-            null;
-          })}
+              </Reveal>
+          )}
         </div>
       </section>
+      }
+
+      {/* Published collections */}
+      {publishedCollections.length > 0 &&
+      <section
+        aria-labelledby="collections-title"
+        className="mx-auto max-w-frame px-5 py-8 lg:px-10 lg:py-16">
+        <SectionHeading
+          id="collections-title"
+          index="Published"
+          title="Collections"
+          description={`${publishedCollections.length} ${publishedCollections.length === 1 ? 'collection' : 'collections'} by ${artist.name}.`} />
+
+        <div className="mt-10 grid gap-x-8 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
+          {publishedCollections.map((collection, i) =>
+          <Reveal key={collection.slug} delay={i * 0.04}>
+              <CollectionCard collection={collection} scale="profile" />
+            </Reveal>
+          )}
+        </div>
+      </section>
+      }
 
       {/* Studio notes */}
       {artist.notes &&

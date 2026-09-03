@@ -17,6 +17,7 @@ import { Label } from '../ui/Label';
 import { StatusBadge } from '../ui/StatusBadge';
 import { Tag } from '../ui/Tag';
 import { useWallet } from '../../contexts/WalletContext';
+import { dropForCollection } from '../../data/drops';
 import type { Artist, Collection } from '../../types';
 import { cn, formatDateTime, formatNumber, formatPrice, truncateAddress } from '../../utils/format';
 
@@ -36,8 +37,12 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
   const htmlPreviewUrl = collection.art.htmlPreview ?
     `${import.meta.env.BASE_URL}${collection.art.htmlPreview}` :
     null;
+  const imagePreviewUrl = collection.art.imagePreview ?? null;
+  const scheduledDrop = dropForCollection(collection.slug);
+  const editorialCollection = !scheduledDrop;
 
-  const upcoming = collection.status === 'Upcoming' || collection.status === 'Allowlist';
+  const upcoming = !!scheduledDrop &&
+    (scheduledDrop.phase === 'Upcoming' || scheduledDrop.phase === 'Allowlist');
   const closed = collection.status === 'Sold Out' || collection.status === 'Closed';
   const progress = collection.supply ?
   Math.round(collection.minted / collection.supply * 100) :
@@ -68,8 +73,8 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
         <nav aria-label="Breadcrumb">
           <ol className="flex items-center gap-2 font-mono text-10 uppercase tracking-meta text-steel">
             <li>
-              <Link to="/drops" className="hover:text-paper">
-                Drops
+              <Link to={editorialCollection ? '/collections' : '/drops'} className="hover:text-paper">
+                {editorialCollection ? 'Collections' : 'Drops'}
               </Link>
             </li>
             <li aria-hidden="true">/</li>
@@ -89,6 +94,7 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
             }
             {shared ? 'Link copied' : 'Share'}
           </button>
+          {collection.spec.contract !== 'TBA' &&
           <a
             href="https://etherscan.io"
             target="_blank"
@@ -98,20 +104,26 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
             <ExternalLinkIcon className="h-3.5 w-3.5" strokeWidth={1.5} />
             View Contract
           </a>
+          }
         </div>
       </div>
 
       <div className="grid gap-8 py-10 lg:grid-cols-12 lg:gap-x-10">
         {/* Artwork */}
         <div className="lg:col-span-7 xl:col-span-8">
-          <div className={cn('relative w-full overflow-hidden border bp-rule', htmlPreviewUrl ? 'aspect-square' : 'aspect-[4/3]')}>
+          <div className={cn('relative w-full overflow-hidden border bp-rule', htmlPreviewUrl || imagePreviewUrl ? 'aspect-square' : 'aspect-[4/3]')}>
             {htmlPreviewUrl ?
             <DistrictsPreview
               title={collection.title}
               className="absolute inset-0"
               interactive
               autoLoad
-            /> :
+            /> : imagePreviewUrl ?
+            <img
+              src={imagePreviewUrl}
+              alt={`Preview of ${collection.title}`}
+              decoding="async"
+              className="absolute inset-0 h-full w-full bg-ink object-contain" /> :
             <ArtCanvas
               variant={collection.art.variant}
               accent={collection.art.accent}
@@ -126,14 +138,17 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
                 {collection.spec.format} · live render
               </span>
               <span className="bg-ink/85 px-2 py-1">
-                <StatusBadge status={collection.status} />
+                {editorialCollection ?
+                <span className="font-mono text-10 uppercase tracking-meta text-bone">Collection</span> :
+                <StatusBadge status={collection.status} />}
               </span>
             </div>
             }
           </div>
           <p className="mt-3 font-mono text-10 uppercase tracking-label text-steel">
             {htmlPreviewUrl ?
-            'Interactive HTML preview rendered live in the browser.' :
+            'Interactive HTML preview rendered live in the browser.' : imagePreviewUrl ?
+            'Animated collection preview.' :
             'Preview generated in-browser from the same rule set as the contract renderer. Interaction and audio are available inside the token view.'}
           </p>
         </div>
@@ -166,7 +181,17 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
 
           {/* Mint panel */}
           <div className="mt-8 border bp-rule">
-            {upcoming ?
+            {editorialCollection ?
+            <div className="p-5">
+                <Label>Published collection</Label>
+                <p className="mt-3 text-2xl font-bold uppercase tracking-tight text-paper">
+                  Available to explore
+                </p>
+                <p className="mt-3 max-w-sm text-[13px] leading-relaxed text-smoke">
+                  Release, edition and ownership details will be added when they are available.
+                </p>
+              </div> :
+            upcoming ?
             <div className="p-5">
                 <Label>Opens</Label>
                 <div className="mt-3">
@@ -301,11 +326,13 @@ export const CollectionHero: React.FC<CollectionHeroProps> = ({ collection, arti
             )}>
             
             {[
-            { k: 'Supply', v: collection.slug === 'districts' ? 'TBA' : collection.supply ? formatNumber(collection.supply) : 'Open edition' },
+            { k: 'Supply', v: editorialCollection || collection.slug === 'districts' ? 'TBA' : collection.supply ? formatNumber(collection.supply) : 'Open edition' },
             { k: 'Storage', v: collection.spec.storage },
-            collection.slug === 'districts' ?
+            editorialCollection || collection.slug === 'districts' ?
             { k: 'Chain', v: collection.spec.chain } :
             { k: 'Standard', v: collection.spec.tokenStandard },
+            editorialCollection ?
+            { k: 'Released', v: collection.spec.releaseDate } :
             collection.slug === 'districts' ?
             { k: 'Price', v: 'TBA' } :
             { k: 'Released', v: collection.spec.releaseDate }].

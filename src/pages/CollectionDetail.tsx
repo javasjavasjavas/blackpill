@@ -9,6 +9,7 @@ import { RelatedExperiments } from '../components/collection/RelatedExperiments'
 import { NotFound } from './NotFound';
 import { getCollection } from '../data/collections';
 import { getArtist } from '../data/artists';
+import { dropForCollection } from '../data/drops';
 
 export const CollectionDetail: React.FC = () => {
   const { slug } = useParams<{slug: string;}>();
@@ -24,12 +25,14 @@ export const CollectionDetail: React.FC = () => {
 
   }
 
+  const scheduledDrop = dropForCollection(collection.slug);
+
   return (
     <>
       <CollectionHero collection={collection} artist={artist} />
       <TechnicalSpec collection={collection} />
       <CollectionStory collection={collection} artist={artist} />
-      <TokenBrowser collection={collection} />
+      {scheduledDrop && <TokenBrowser collection={collection} />}
       <ArtistModule artist={artist} currentSlug={collection.slug} />
       {collection.slug !== 'districts' && <RelatedExperiments collection={collection} />}
     </>);

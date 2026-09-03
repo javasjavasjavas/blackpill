@@ -1,4 +1,4 @@
-export type Chain = 'Ethereum' | 'Base' | 'Tezos' | 'Arbitrum' | 'Polygon' | 'Other';
+export type Chain = 'Ethereum' | 'Base' | 'Tezos' | 'Arbitrum' | 'Polygon' | 'Other' | 'TBA';
 
 export type Currency = 'ETH' | 'XTZ' | 'MATIC';
 
@@ -15,7 +15,7 @@ export type TechTag =
 'AI' |
 'Experimental Contract';
 
-export type StorageMethod = 'Fully On-Chain' | 'Partially On-Chain' | 'IPFS' | 'Arweave';
+export type StorageMethod = 'Fully On-Chain' | 'Partially On-Chain' | 'Off-chain' | 'IPFS' | 'Arweave' | 'TBA';
 
 export type CollectionStatus = 'Live' | 'Upcoming' | 'Allowlist' | 'Sold Out' | 'Closed';
 
@@ -25,7 +25,8 @@ export type ArtFormat =
 'Canvas / JS' |
 'WebGL / GLSL' |
 'Audio / WebAudio' |
-'PNG sequence';
+'PNG sequence' |
+'GIF';
 
 /** Identifier for the deterministic generative preview renderer used by a collection. */
 export type ArtVariant =
@@ -48,6 +49,8 @@ export interface CollectionArt {
   accentAlt?: string;
   /** Optional self-contained HTML artwork used as a live preview. */
   htmlPreview?: string;
+  /** Optional image or animated image used as the collection preview. */
+  imagePreview?: string;
 }
 
 export interface TechnicalSpec {

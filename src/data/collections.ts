@@ -518,6 +518,51 @@ export const collections: Collection[] = [
   { name: 'Tone', values: ['Hum', 'Drip', 'Wind', 'Silence'] }],
 
   art: { variant: 'greyroom', accent: '#9AA0A6' }
+},
+{
+  id: 'BP-011',
+  index: 11,
+  slug: 'blotters',
+  title: 'Blotters',
+  artistSlug: 'arbo',
+  concept: 'An animated collection by Arbo Vonderwald.',
+  summary: 'An animated collection by Arbo Vonderwald.',
+  tech: ['Generative'],
+  categories: ['generative'],
+  status: 'Live',
+  supply: 0,
+  minted: 0,
+  price: 0,
+  currency: 'ETH',
+  year: 2026,
+  dropDate: '2026-09-03T00:00:00.000Z',
+  spec: {
+    chain: 'TBA',
+    contract: 'TBA',
+    tokenStandard: 'TBA',
+    storage: 'TBA',
+    metadataLocation: 'TBA',
+    format: 'GIF',
+    rendering: 'Animated image preview',
+    dynamicBehavior: 'TBA',
+    license: 'TBA',
+    royalty: 'TBA',
+    releaseDate: 'TBA'
+  },
+  story: {
+    idea: 'Blotters is an animated collection by Arbo Vonderwald.',
+    howItWorks: 'Technical details will be published soon.',
+    innovation: 'Additional curatorial notes will be published soon.',
+    ownership: 'Collection and ownership details will be published soon.',
+    process: 'Process notes will be published soon.',
+    artistStatement: 'Artist statement coming soon.'
+  },
+  traits: [],
+  art: {
+    variant: 'signal',
+    accent: '#B7FF00',
+    imagePreview: '/images/blotters.gif'
+  }
 }];
 
 

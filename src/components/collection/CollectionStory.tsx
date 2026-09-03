@@ -14,6 +14,7 @@ export const CollectionStory: React.FC<CollectionStoryProps> = ({ collection, ar
   const htmlPreviewUrl = collection.art.htmlPreview ?
     `${import.meta.env.BASE_URL}${collection.art.htmlPreview}` :
     null;
+  const imagePreviewUrl = collection.art.imagePreview ?? null;
   const chapters = [
   { index: '01', title: 'The idea', body: collection.story.idea },
   { index: '02', title: 'How it works', body: collection.story.howItWorks },
@@ -71,6 +72,14 @@ export const CollectionStory: React.FC<CollectionStoryProps> = ({ collection, ar
                           />
                         </div>
                         )}
+                      </div> : imagePreviewUrl ?
+                    <div className="relative aspect-square w-full max-w-xl overflow-hidden border bp-rule">
+                        <img
+                          src={imagePreviewUrl}
+                          alt={`Preview of ${collection.title}`}
+                          loading="lazy"
+                          decoding="async"
+                          className="absolute inset-0 h-full w-full bg-ink object-contain" />
                       </div> :
                     <div className="relative aspect-[16/7] w-full overflow-hidden border bp-rule">
                         <ArtCanvas
