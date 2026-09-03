@@ -57,7 +57,7 @@ export const CollectionStory: React.FC<CollectionStoryProps> = ({ collection, ar
                   {chapter.body}
                 </p>
 
-                {i === 1 &&
+                {i === 1 && !imagePreviewUrl &&
               <figure className="mt-8">
                     {collection.slug === 'districts' && htmlPreviewUrl ?
                     <div className="grid gap-4 sm:grid-cols-2">
@@ -72,14 +72,6 @@ export const CollectionStory: React.FC<CollectionStoryProps> = ({ collection, ar
                           />
                         </div>
                         )}
-                      </div> : imagePreviewUrl ?
-                    <div className="relative aspect-square w-full max-w-xl overflow-hidden border bp-rule">
-                        <img
-                          src={imagePreviewUrl}
-                          alt={`Preview of ${collection.title}`}
-                          loading="lazy"
-                          decoding="async"
-                          className="absolute inset-0 h-full w-full bg-ink object-contain" />
                       </div> :
                     <div className="relative aspect-[16/7] w-full overflow-hidden border bp-rule">
                         <ArtCanvas
