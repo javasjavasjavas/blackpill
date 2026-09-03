@@ -50,7 +50,7 @@ export const ArtistsIndex: React.FC = () =>
                   <span className="flex items-center gap-2">
                     <Link
                       to={`/artist/${artist.slug}`}
-                      className="truncate text-xl font-extrabold uppercase leading-none tracking-tightest text-paper transition-colors duration-150 group-hover:text-accent">
+                      className={`${artist.name.length > 13 ? 'text-base' : 'text-xl'} truncate font-extrabold uppercase leading-none tracking-tightest text-paper transition-colors duration-150 group-hover:text-accent`}>
                       {artist.name}
                     </Link>
                     {artist.verified &&

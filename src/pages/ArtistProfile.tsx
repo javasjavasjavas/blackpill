@@ -65,7 +65,10 @@ export const ArtistProfile: React.FC = () => {
                 {new Date(artist.joined).getFullYear()}
               </Label>
               <div className="mt-5 flex items-start gap-4">
-                <h1 className="text-mega font-extrabold uppercase text-paper">{artist.name}</h1>
+                <h1
+                  className={`${artist.name.length > 13 ? 'text-[clamp(3rem,6vw,6.5rem)] tracking-[-0.04em]' : 'text-mega'} font-extrabold uppercase leading-[0.92] text-paper`}>
+                  {artist.name}
+                </h1>
                 {artist.verified &&
                 <CheckCircle2Icon
                   className="mt-3 h-6 w-6 shrink-0 text-volt"

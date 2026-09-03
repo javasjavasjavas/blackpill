@@ -25,6 +25,27 @@ export const artists: Artist[] = [
   accent: '#FF00A8'
 },
 {
+  slug: 'arbo',
+  name: 'ARBOVONDERWALD',
+  location: 'Location undisclosed',
+  verified: false,
+  disciplines: ['Generative', 'Narrative', 'On-Chain'],
+  focus: 'Generative · Narrative · On-Chain',
+  bio: 'ARBOVONDERWALD is an artist working at the intersection of generative systems, narrative and on-chain experimentation.',
+  longBio: [
+  'ARBOVONDERWALD develops work across generative, narrative and on-chain practices. Additional biographical information will be published soon.'],
+
+  statement: 'Biography and artist statement coming soon.',
+  links: { website: 'vandalzcrew.com', x: '@arbovonderwald' },
+  wallet: '—',
+  ens: '—',
+  joined: '2026-09-03',
+  externalWork: [],
+  portraitImage: '/images/arbo.jpg',
+  portraitSeed: 41,
+  accent: '#FF00A8'
+},
+{
   slug: 'ivo-marchetti',
   name: 'Ivo Marchetti',
   location: 'Turin, IT',
@@ -216,4 +237,6 @@ export const artists: Artist[] = [
 
 export const getArtist = (slug: string): Artist | undefined => artists.find((a) => a.slug === slug);
 
-export const registryArtists = artists.filter((artist) => artist.slug === 'javier-damico');
+const featuredArtistSlugs = new Set(['javier-damico', 'arbo']);
+
+export const registryArtists = artists.filter((artist) => featuredArtistSlugs.has(artist.slug));
