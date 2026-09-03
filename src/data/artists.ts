@@ -31,11 +31,13 @@ export const artists: Artist[] = [
   verified: false,
   disciplines: ['Generative', 'Narrative', 'On-Chain'],
   focus: 'Generative · Narrative · On-Chain',
-  bio: 'ARBOVONDERWALD is an artist working at the intersection of generative systems, narrative and on-chain experimentation.',
+  bio: 'Arbo Vonderwald was raised on a working tree farm in Rhode Island, on land his family has cut selectively for generations.',
   longBio: [
-  'ARBOVONDERWALD develops work across generative, narrative and on-chain practices. Additional biographical information will be published soon.'],
+  'Arbo Vonderwald was raised on a working tree farm in Rhode Island, on land his family has cut selectively for generations. He learned to read a forest before he learned to read a book. He studied film and media art at Pratt in the 1990s, then spent the next two decades building systems. Special effects rigs that pushed signal back and forth between digital and analog. Software for companies that make physical things. Companies, eventually, when the software wasn\'t enough.',
+  'The Arboreal project began somewhere in the middle of that. A long transmission from a timeline running parallel to ours, where centralized power has already failed and the 7th River runs visible under the pavement again. He calls the persona doing the transmitting The Arborist. The work travels across forms. Post State, the manuscripts. Arboreal Intelligence, generative and on-chain. Printed editions, physical objects, slow craft. Things built to outlast the systems they describe.',
+  'He still cuts selectively. He still builds systems. He is mostly here.'],
 
-  statement: 'Biography and artist statement coming soon.',
+  statement: 'The most dangerous delusion is not that order can emerge from chaos, but that chaos is not itself a form of order.',
   links: { website: 'vandalzcrew.com', x: '@arbovonderwald' },
   wallet: '—',
   ens: '—',
