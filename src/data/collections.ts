@@ -281,7 +281,7 @@ export const collections: Collection[] = [
   price: 0.01,
   currency: 'ETH',
   year: 2026,
-  dropDate: '2026-09-24T15:32:00.000Z',
+  dropDate: '2026-11-08T15:32:00.000Z',
   spec: {
     chain: 'Ethereum',
     contract: '0x6Bd3F02aC17e94b58Ac1d7E306f2B84a9C05E1D7',

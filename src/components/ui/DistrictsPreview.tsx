@@ -11,9 +11,7 @@ interface DistrictsPreviewProps {
 }
 
 const posterUrl = `${import.meta.env.BASE_URL}images/districts-preview.jpg`;
-const livePreviewUrl = import.meta.env.PROD
-  ? 'https://blackpill-labs.onrender.com/artworks/districts.html'
-  : `${import.meta.env.BASE_URL}artworks/districts.html`;
+const livePreviewUrl = `${import.meta.env.BASE_URL}artworks/districts.html`;
 
 export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
   title,
@@ -23,9 +21,14 @@ export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
   edgeToEdge = false
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const readinessTimerRef = useRef<number>();
+  const readinessRunRef = useRef(0);
   const [requested, setRequested] = useState(false);
   const [visible, setVisible] = useState(true);
   const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [previewKey, setPreviewKey] = useState(0);
   const shouldMount = interactive && requested && visible;
 
   useEffect(() => {
@@ -68,8 +71,67 @@ export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
   }, [autoLoad, interactive]);
 
   useEffect(() => {
-    if (!shouldMount) setLoaded(false);
+    if (!shouldMount) {
+      readinessRunRef.current += 1;
+      setLoaded(false);
+      if (readinessTimerRef.current !== undefined) {
+        window.clearTimeout(readinessTimerRef.current);
+      }
+    }
   }, [shouldMount]);
+
+  useEffect(() => () => {
+    readinessRunRef.current += 1;
+    if (readinessTimerRef.current !== undefined) {
+      window.clearTimeout(readinessTimerRef.current);
+    }
+  }, []);
+
+  const confirmPreviewReady = () => {
+    const run = ++readinessRunRef.current;
+    setLoaded(true);
+    setFailed(false);
+
+    if (readinessTimerRef.current !== undefined) {
+      window.clearTimeout(readinessTimerRef.current);
+    }
+
+    let attempts = 0;
+    const check = () => {
+      if (run !== readinessRunRef.current) return;
+      attempts += 1;
+
+      try {
+        const document = iframeRef.current?.contentDocument;
+        const text = document?.body?.innerText ?? '';
+        const ready = Boolean(document?.querySelector('.city-data'));
+        const webglFailed = text.includes('This browser could not start WebGL.');
+
+        if (ready) return;
+
+        if (webglFailed) {
+          setLoaded(false);
+          setFailed(true);
+          return;
+        }
+
+        if (attempts >= 240) return;
+      } catch {
+        // The same-origin preview should be readable. Keep polling briefly while it boots.
+      }
+
+      readinessTimerRef.current = window.setTimeout(check, 250);
+    };
+
+    check();
+  };
+
+  const retryPreview = () => {
+    readinessRunRef.current += 1;
+    setLoaded(false);
+    setFailed(false);
+    setPreviewKey((key) => key + 1);
+  };
 
   return (
     <div ref={containerRef} className={cn('relative h-full w-full bg-[#06070a]', className)}>
@@ -83,18 +145,22 @@ export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
 
       {shouldMount &&
       <iframe
-        src={livePreviewUrl}
+        key={previewKey}
+        ref={iframeRef}
+        src={`${livePreviewUrl}?preview=${previewKey}`}
         title={`Interactive preview of ${title}`}
         className={cn(
-          'absolute z-10 border-0 bg-[#06070a]',
+          'absolute z-10 border-0 bg-[#06070a] transition-opacity duration-300',
+          failed ? 'pointer-events-none opacity-0' : 'opacity-100',
+          !loaded ?
+          'left-1/2 top-1/2 h-[min(720px,100%)] w-[min(720px,100%)] -translate-x-1/2 -translate-y-1/2' :
           edgeToEdge ?
           '-left-3 -top-3 h-[calc(100%+24px)] w-[calc(100%+24px)] sm:-left-6 sm:-top-6 sm:h-[calc(100%+48px)] sm:w-[calc(100%+48px)]' :
           'inset-0 h-full w-full'
         )}
-        sandbox="allow-scripts"
         loading="lazy"
         referrerPolicy="no-referrer"
-        onLoad={() => setLoaded(true)}
+        onLoad={confirmPreviewReady}
       />
       }
 
@@ -109,10 +175,20 @@ export const DistrictsPreview: React.FC<DistrictsPreviewProps> = ({
         </button>
       }
 
-      {shouldMount && !loaded &&
+      {shouldMount && !loaded && !failed &&
       <span className="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 bg-ink/80 px-3 py-2 font-mono text-10 uppercase tracking-meta text-bone animate-pulse">
           Loading Preview
         </span>
+      }
+
+      {shouldMount && failed &&
+      <button
+        type="button"
+        onClick={retryPreview}
+        className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 border border-white/30 bg-ink/90 px-4 py-2.5 font-mono text-10 uppercase tracking-meta text-paper transition-colors duration-150 hover:border-paper focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper"
+      >
+          Retry interactive preview
+        </button>
       }
     </div>
   );
